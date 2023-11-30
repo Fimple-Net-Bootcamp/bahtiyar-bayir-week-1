@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Entitys\" />
+    <Folder Include="DBOperations\" />
+    <Folder Include="build output\" />
   </ItemGroup>
 
 </Project>
