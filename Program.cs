@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
+Console.Title = "Week 1 - Fimple library app";
+Console.SetWindowSize(144, 48);
+Console.SetWindowPosition(0, 0);
+
 var _host = Host.CreateDefaultBuilder().ConfigureServices(
     services =>
     {
