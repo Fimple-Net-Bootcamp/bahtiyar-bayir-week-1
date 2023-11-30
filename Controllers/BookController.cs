@@ -20,10 +20,17 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             _mapper = mapper;
         }
 
-        public List<BooksViewModel> ListBook()
+        public List<BooksViewModel> GetBooks()
         {
             GetBooksQuery query = new GetBooksQuery(_libraryDbContext, _mapper);
             var result = query.Handle();
+            return result;
+        }
+
+        public BooksViewModel GetBookById(int id)
+        {
+            GetBookByIdQuery query = new GetBookByIdQuery(_libraryDbContext, _mapper);
+            var result = query.Handle(id);
             return result;
         }
     }

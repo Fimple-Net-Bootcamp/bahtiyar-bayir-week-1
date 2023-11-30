@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +26,6 @@ namespace fimple_bootcamp_week_1_homework.Manager
 
         public void Start()
         {
-            //Console.Write(dbContext.Books.FirstOrDefault(b => b.Id == 1).Title);
-
             bool loop = true;
             while (loop)
             {
@@ -69,9 +69,9 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "3": CollectBooksFromReadingRoom(); break;
                     case "4": CreateBookRecord(); break;
                     case "5": DeleteBookRecord(); break;
-                    case "6": UpdateBookRecord(); break;
+                    case "6": UpdateBookRecord(); break;*/
                     case "7": PrintListofAllBooks(); break;
-                    case "8": PrintOnlyAvailableForBorrowBookList(); break;
+                    /*case "8": PrintOnlyAvailableForBorrowBookList(); break;
                     case "9": PrintOnlyUnavailableForBorrowBookList(); break;
                     case "10": CreateMemberRecord(); break;
                     case "11": DeleteMemberRecord(); break;
@@ -88,6 +88,29 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "22": loop = false; break;
                 }
             }
+        }
+
+        /// <summary>
+        ///  Function defined for the "7 List all books" menu.
+        /// </summary>
+        internal void PrintListofAllBooks()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "7 - List of Registered Books ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -                Book Title                |             Author             | Publish Date |   Status   \r\n" + new string('-', 143));
+            BookController controller = new BookController(dbContext, mapper);
+            var bookList = controller.GetBooks();
+            bookList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Title,-40}",
+                                            ConsoleColor.White, $" | {x.Author,-30} | ",
+                                            ConsoleColor.White, $" {x.PublishDate.ToString("yyyy.MM.dd")}  | ");
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
         }
     }
 }

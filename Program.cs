@@ -4,6 +4,7 @@ using fimple_bootcamp_week_1_homework.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 Console.Title = "Week 1 - Fimple library app";
@@ -15,6 +16,7 @@ var _host = Host.CreateDefaultBuilder().ConfigureServices(
     {
         services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase(databaseName: "LibraryManagerDB"));
         services.AddScoped<ILibraryDbContext>(provider => provider.GetService<LibraryDbContext>());
+        services.AddScoped<ICustomisedMessagePrinter, CustomisedMessagePrinter>();
         services.AddScoped<ICustomisedMessagePrinter, CustomisedMessagePrinter>();
         services.AddScoped<IManager, Manager>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());

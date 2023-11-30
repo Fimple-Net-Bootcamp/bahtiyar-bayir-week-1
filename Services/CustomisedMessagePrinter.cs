@@ -8,7 +8,7 @@ namespace fimple_bootcamp_week_1_homework.Services
 {
     internal class CustomisedMessagePrinter : ICustomisedMessagePrinter
     {
-        private int _lineWidth = 143;
+        public readonly int _lineWidth = 143;
         public CustomisedMessagePrinter()
         {
         }

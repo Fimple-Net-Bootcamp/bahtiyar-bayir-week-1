@@ -13,5 +13,10 @@ namespace fimple_bootcamp_week_1_homework.Entitys
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+
+        public string GetName()
+        {
+            return Name + " " + Surname;
+        }
     }
 }
