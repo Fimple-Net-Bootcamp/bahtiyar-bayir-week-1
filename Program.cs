@@ -1,4 +1,6 @@
 ﻿using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.Manager;
+using fimple_bootcamp_week_1_homework.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +11,8 @@ var _host = Host.CreateDefaultBuilder().ConfigureServices(
     {
         services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase(databaseName: "LibraryManagerDB"));
         services.AddScoped<ILibraryDbContext>(provider => provider.GetService<LibraryDbContext>());
+        services.AddScoped<ICustomisedMessagePrinter, CustomisedMessagePrinter>();
+        services.AddScoped<IManager, Manager>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }).Build();
 
@@ -19,5 +23,7 @@ using (var scope = _host.Services.CreateAsyncScope())
 };
 
 var _libraryDbContext = _host.Services.GetRequiredService<ILibraryDbContext>();
+var _logger = _host.Services.GetRequiredService<ICustomisedMessagePrinter>();
+var _manager = _host.Services.GetRequiredService<IManager>();
 
-Console.WriteLine(_libraryDbContext.Books.FirstOrDefault(book => book.Id == 1).Title);
+_manager.Start();
