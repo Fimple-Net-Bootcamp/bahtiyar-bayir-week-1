@@ -33,5 +33,6 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             var result = query.Handle(id);
             return result;
         }
+
     }
 }
