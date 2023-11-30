@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 var _host = Host.CreateDefaultBuilder().ConfigureServices(
     services =>
     {
         services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase(databaseName: "LibraryManagerDB"));
         services.AddScoped<ILibraryDbContext>(provider => provider.GetService<LibraryDbContext>());
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }).Build();
 
 using (var scope = _host.Services.CreateAsyncScope())
