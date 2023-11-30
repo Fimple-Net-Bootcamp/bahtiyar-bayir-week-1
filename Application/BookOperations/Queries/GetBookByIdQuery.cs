@@ -21,7 +21,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 
         public BooksViewModel Handle(int id)
         {
-            var bookList = _dbContext.Books.Include(x => x.Author).Where(b => b.Id == id).OrderBy(x => x.Id).ToList();
+            var bookList = _dbContext.Books.Include(x => x.Author).FirstOrDefault(b => b.Id == id);
             return _mapper.Map<BooksViewModel>(bookList);
         }
     }
