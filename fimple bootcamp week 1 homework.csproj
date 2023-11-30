@@ -6,6 +6,7 @@
     <RootNamespace>fimple_bootcamp_week_1_homework</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BaseOutputPath>C:\Users\bhtyr\OneDrive\Desktop\Fimple Bootcamp İlerlemelerim\fimple bootcamp week 1 homework\build output</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
