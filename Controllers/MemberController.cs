@@ -4,6 +4,7 @@ using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.Dele
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMember;
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
 using FluentValidation;
@@ -28,14 +29,14 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             _logger = logger;
         }
 
-        public List<MembersViewModel> GetMembers()
+        public List<MemberViewModel> GetMembers()
         {
             GetMembersQuery query = new GetMembersQuery(_dbContext, _mapper);
             var result = query.Handle();
             return result;
         }
 
-        public MembersViewModel GetMemberById(int id)
+        public MemberViewModel GetMemberById(int id)
         {
             GetMemberByIDQuery query = new GetMemberByIDQuery(_dbContext, _mapper);
             GetMemberByIDQueryValidator validator = new();
@@ -53,14 +54,14 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        public List<MembersViewModel> GetOnlyActiveMembers()
+        public List<MemberViewModel> GetOnlyActiveMembers()
         {
             GetActiveMembersQuery query = new GetActiveMembersQuery(_dbContext, _mapper);
             var result = query.Handle();
             return result;
         }
 
-        public List<MembersViewModel> GetOnlyInctiveMembers()
+        public List<MemberViewModel> GetOnlyInctiveMembers()
         {
             GetInactiveMembersQuery query = new GetInactiveMembersQuery(_dbContext, _mapper);
             var result = query.Handle();
