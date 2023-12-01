@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
+using fimple_bootcamp_week_1_homework.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,12 @@ namespace fimple_bootcamp_week_1_homework.Application.AuthorOperations.Command.C
 
         public void Handle()
         {
-            var member = _dbContext.Authors.SingleOrDefault(x => x.GetName().ToLower().Trim() == $"{Model.Name} {Model.Surname}".ToLower().Trim());
-            if (member is not null)
-                throw new InvalidOperationException($"Bu isimde bir üye kaydı daha önceden mevcut! Üye numarası {member.Id}");
+            var author = _dbContext.Authors.SingleOrDefault(x => x.GetName().ToLower().Trim() == $"{Model.Name} {Model.Surname}".ToLower().Trim());
+            if (author is not null)
+                throw new InvalidOperationException($"Bu isimde bir yazar kaydı daha önceden mevcut! Üye numarası {author.Id}");
 
-            member = _mapper.Map<Author>(Model);
-            _dbContext.Authors.Add(member);
+            author = _mapper.Map<Author>(Model);
+            _dbContext.Authors.Add(author);
             _dbContext.SaveChanges();
         }
     }

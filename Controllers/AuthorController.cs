@@ -55,7 +55,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        /*public ProcessStatus CreateAuthor(CreateAuthorModel model)
+        public ProcessStatus CreateAuthor(CreateAuthorModel model)
         {
 
             CreateAuthorCommand command = new CreateAuthorCommand(_dbContext, _mapper);
@@ -74,7 +74,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        public ProcessStatus DeleteAuthor(int id)
+        /*public ProcessStatus DeleteAuthor(int id)
         {
             DeleteAuthorCommand command = new DeleteAuthorCommand(_dbContext);
             DeleteAuthorCommandValidator validator = new DeleteAuthorCommandValidator();

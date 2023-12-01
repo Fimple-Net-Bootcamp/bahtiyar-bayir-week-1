@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\AuthorOperations\Command\DeleteAuthor\" />
-    <Folder Include="Application\AuthorOperations\Command\UpdateAuthor\" />
+    <Folder Include="Application\AuthorOperations\Commands\DeleteAuthor\" />
+    <Folder Include="Application\AuthorOperations\Commands\UpdateAuthor\" />
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
   </ItemGroup>
