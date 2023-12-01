@@ -7,6 +7,7 @@ using fimple_bootcamp_week_1_homework.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,8 +74,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "2": ReturnBorrowedBook(); break;
                     case "3": CollectBooksFromReadingRoom(); break;*/
                     case "4": CreateBookRecord(); break;
-                    /* case "5": DeleteBookRecord(); break;
-                     case "6":UpdateBookRecord(); break; */
+                    case "5": DeleteBookRecord(); break;
+                    /* case "6":UpdateBookRecord(); break; */
                     case "7": PrintListofAllBooks(); break;
                     case "8": PrintBookByTitle(); break;
                     /*case "9": PrintOnlyAvailableForBorrowBookList(); break;
@@ -97,6 +98,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
                 }
             }
         }
+
         /// <summary>
         ///  Function defined for the "4 Create book record" menu.
         /// </summary>
@@ -107,13 +109,13 @@ namespace fimple_bootcamp_week_1_homework.Manager
             CreateBookModel model = new();
             logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
 
-            logger.WriteMessage(false, ConsoleColor.White, $"{"Kitap başlığı*:",-30}"); model.Title   = Console.ReadLine();
-            logger.WriteMessage(false, ConsoleColor.White, $"{"Yazarın ID'si*:",-30}");  model.AuthorId = Convert.ToInt32(Console.ReadLine());
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Kitap başlığı*:",-30}"); model.Title = Console.ReadLine();
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Yazarın ID'si*:",-30}"); model.AuthorId = Convert.ToInt32(Console.ReadLine());
             logger.WriteMessage(false, ConsoleColor.White, $"{"Yayınlanma tarihi*(gg.aa.yyyy):",-30}");
             if (DateTime.TryParse(Console.ReadLine(), out DateTime result)) model.PublishDate = result;
             else { logger.WriteMessage(true, ConsoleColor.White, "Girilen ", ConsoleColor.Red, "tarih", ConsoleColor.White, " formatı hatalı. Kayıt yapılamadı!\r\n"); Console.ReadKey(); return; }
             BookController controller = new(dbContext, mapper, logger);
-            if(controller.CreateBook(model) == ProcessStatus.isSuccess)
+            if (controller.CreateBook(model) == ProcessStatus.isSuccess)
             {
                 logger.WriteMessage(true, ConsoleColor.White, "The ", ConsoleColor.Green, $"{model.Title}", ConsoleColor.White, " başlıklı kitap başarıyla kaydedildi.");
                 Console.ReadKey();
@@ -127,6 +129,37 @@ namespace fimple_bootcamp_week_1_homework.Manager
             Console.ReadKey();
 
         }
+
+        /// <summary>
+        ///  Function defined for the "5 Delete book record" menu.
+        /// </summary>
+        internal void DeleteBookRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "5 - Kitap Kaydı Silme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz kitap başlığını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            BookController controller = new(dbContext, mapper, logger);
+            var book = controller.GetBookById(id);
+            if (book is not null)
+            {
+                logger.WriteMessage(false, ConsoleColor.DarkYellow, "\nUyarı! ", ConsoleColor.Green, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(book.Title)}", ConsoleColor.White, " başlıklı kitabı silmek üzeresiniz onaylıyor musunuz? (Evet: e/E)");
+                if (Console.ReadLine().Trim().ToLower() == "e")
+                {
+                    if (controller.DeleteBook(id) == ProcessStatus.isSuccess)
+                    {
+                        logger.WriteMessage(true, ConsoleColor.Green, $"\n\n{book.Title}", ConsoleColor.White, " başlıklı kitap kaydı başarıyla silindi.");
+                    }
+                    else
+                    {
+                        logger.WriteMessage(true, ConsoleColor.White, "Kitap kaydı yapılamadı!");
+                    }
+                }
+                else logger.WriteMessage(true, ConsoleColor.White, "Kayıt silme işlemi iptal edildi.");
+            }
+            Console.ReadKey();
+        }
+
 
         /// <summary>
         ///  Function defined for the "7 List all books" menu.
@@ -160,9 +193,9 @@ namespace fimple_bootcamp_week_1_homework.Manager
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "7 - List of Registered Books ");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Enter the title of the book you want to see>");
-            string title = Console.ReadLine();
+            int id = int.Parse(Console.ReadLine());
             BookController controller = new BookController(dbContext, mapper, logger);
-            var book = controller.GetBookByTitle(title);
+            var book = controller.GetBookById(id);
             if (book is null)
             {
                 Console.ReadKey();
@@ -172,7 +205,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             logger.WriteMessage(true, ConsoleColor.Magenta, $"{book.Id,-3} - ",
                                             ConsoleColor.Yellow, $"{book.Title,-40} ",
                                             ConsoleColor.White, $"| {book.Author,-30} | ",
-                                            ConsoleColor.White, $" {book.PublishDate.ToString("yyyy.MM.dd")}  | ", 
+                                            ConsoleColor.White, $" {book.PublishDate.ToString("yyyy.MM.dd")}  | ",
                                             book.State ? ConsoleColor.Green : ConsoleColor.Red, book.State ? "Alınabilir" : "Alınamaz"
             );
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");

@@ -11,7 +11,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 {
     internal class GetBookByIdQuery
     {
-        public string title;
+        public int id;
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
         public GetBookByIdQuery(ILibraryDbContext dbContext, IMapper mapper)
@@ -21,7 +21,9 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
         }
         public BooksViewModel Handle()
         {
-            var book = _dbContext.Books.Include(x => x.Author).FirstOrDefault(b => b.Title.ToLower().Trim() == title.ToLower().Trim());
+            var book = _dbContext.Books.Include(x => x.Author).FirstOrDefault(b => b.Id == id);
+            if(book is null)
+                throw new ArgumentException($"{id} numarasına sahip bir kitap bulunamadı!");
             return _mapper.Map<BooksViewModel>(book);
         }
     }

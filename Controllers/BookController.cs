@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
 using Microsoft.EntityFrameworkCore;
+using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.DeleteBook;
 
 namespace fimple_bootcamp_week_1_homework.Controllers
 {
@@ -35,11 +36,11 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             return result;
         }
 
-        public BooksViewModel GetBookByTitle(string title)
+        public BooksViewModel GetBookById(int id)
         {
             GetBookByIdQuery query = new GetBookByIdQuery(_dbContext, _mapper);
             GetBookByIDQueryValidator validator = new();
-            query.title = title;
+            query.id = id;
             try
             {
                 validator.ValidateAndThrow(query);
@@ -59,6 +60,24 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             CreateBookCommand query = new CreateBookCommand(_dbContext, _mapper);
             query.Model = model;
             CreateBookCommandValidator validator = new CreateBookCommandValidator();
+            try
+            {
+                validator.ValidateAndThrow(query);
+                query.Handle();
+                return ProcessStatus.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
+        }
+
+        public ProcessStatus DeleteBook(int id)
+        {
+            DeleteBookCommand query = new DeleteBookCommand(_dbContext);
+            DeleteBookCommandValidator validator = new DeleteBookCommandValidator();
+            query.id = id;
             try
             {
                 validator.ValidateAndThrow(query);
