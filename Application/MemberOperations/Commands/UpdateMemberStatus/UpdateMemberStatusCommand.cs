@@ -7,17 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMemberStatus
+namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMemberState
 {
-    internal class UpdateMemberStatusCommand
+    internal class UpdateMemberStateCommand
     {
         public int id;
         private readonly ILibraryDbContext _dbContext;
-        private readonly IMapper _mapper;
-        public UpdateMemberStatusCommand(ILibraryDbContext dbContext, IMapper mapper)
+        public UpdateMemberStateCommand(ILibraryDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
         public void Handle()
         {

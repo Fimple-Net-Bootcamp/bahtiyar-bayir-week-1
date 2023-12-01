@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMemberStatus
+namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMemberState
 {
-    internal class UpdateMemberStatusCommandValidator : AbstractValidator<UpdateMemberStatusCommand>
+    internal class UpdateMemberStateCommandValidator : AbstractValidator<UpdateMemberStateCommand>
     {
-        public UpdateMemberStatusCommandValidator()
+        public UpdateMemberStateCommandValidator()
         {
             RuleFor(command => command.id).GreaterThan(0).LessThan(500);
         }

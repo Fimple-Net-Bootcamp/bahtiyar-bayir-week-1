@@ -2,6 +2,7 @@
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.CreateMember;
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.DeleteMember;
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMember;
+using fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMemberState;
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
@@ -110,6 +111,23 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             UpdateMemberCommandValidator validator = new UpdateMemberCommandValidator();
             command.Id = id;
             command.Model = model;
+            try
+            {
+                validator.ValidateAndThrow(command);
+                command.Handle();
+                return ProcessStatus.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
+        }
+        public ProcessStatus UpdateMemberStatus(int id)
+        {
+            UpdateMemberStateCommand command = new UpdateMemberStateCommand(_dbContext);
+            UpdateMemberStateCommandValidator validator = new UpdateMemberStateCommandValidator();
+            command.id = id;
             try
             {
                 validator.ValidateAndThrow(command);
