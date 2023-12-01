@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
