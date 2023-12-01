@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 {
-    internal class GetBookByIDQueryValidator : AbstractValidator<GetBookByIdQuery>
+    internal class GetBookByIDQueryValidator : AbstractValidator<GetBookByIDQuery>
     {
         public GetBookByIDQueryValidator()
         {
