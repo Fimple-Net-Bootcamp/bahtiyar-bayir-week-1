@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
+using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.Entitys;
@@ -117,7 +118,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             BookController controller = new(dbContext, mapper, logger);
             if (controller.CreateBook(model) == ProcessStatus.isSuccess)
             {
-                logger.WriteMessage(true, ConsoleColor.White, "The ", ConsoleColor.Green, $"{model.Title}", ConsoleColor.White, " başlıklı kitap başarıyla kaydedildi.");
+                logger.WriteMessage(true, ConsoleColor.Green, $"{model.Title}", ConsoleColor.White, " başlıklı kitap başarıyla kaydedildi.");
                 Console.ReadKey();
             }
             else
@@ -125,9 +126,6 @@ namespace fimple_bootcamp_week_1_homework.Manager
                 logger.WriteMessage(true, ConsoleColor.White, "Kitap kaydı yapılamadı!");
                 Console.ReadKey();
             }
-
-            Console.ReadKey();
-
         }
 
         /// <summary>
@@ -173,7 +171,24 @@ namespace fimple_bootcamp_week_1_homework.Manager
             var book = controller.GetBookById(id);
             if (book is not null)
             {
+                UpdateBookModel model = new();
+                logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
 
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Kitap başlığı*:",-30}"); model.Title = Console.ReadLine();
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Yazarın ID'si*:",-30}"); model.AuthorId = Convert.ToInt32(Console.ReadLine());
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Yayınlanma tarihi*(gg.aa.yyyy):",-30}");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime result)) model.PublishDate = result;
+                else { logger.WriteMessage(true, ConsoleColor.White, "Girilen ", ConsoleColor.Red, "tarih", ConsoleColor.White, " formatı hatalı. Kayıt yapılamadı!\r\n"); Console.ReadKey(); return; }
+                if (controller.UpdateBook(id, model) == ProcessStatus.isSuccess)
+                {
+                    logger.WriteMessage(true, ConsoleColor.Green, $"{model.Title}", ConsoleColor.White, " başlıklı kitap başarıyla güncellendi.");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    logger.WriteMessage(true, ConsoleColor.White, "\nKitap kaydı güncellenemedi!");
+                    Console.ReadKey();
+                }
             }
             Console.ReadKey();
         }

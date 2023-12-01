@@ -13,6 +13,8 @@ using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
 using Microsoft.EntityFrameworkCore;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.DeleteBook;
+using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
+using System.Web.Mvc;
 
 namespace fimple_bootcamp_week_1_homework.Controllers
 {
@@ -57,13 +59,13 @@ namespace fimple_bootcamp_week_1_homework.Controllers
         public ProcessStatus CreateBook(CreateBookModel model)
         {
 
-            CreateBookCommand query = new CreateBookCommand(_dbContext, _mapper);
-            query.Model = model;
+            CreateBookCommand command = new CreateBookCommand(_dbContext, _mapper);
+            command.Model = model;
             CreateBookCommandValidator validator = new CreateBookCommandValidator();
             try
             {
-                validator.ValidateAndThrow(query);
-                query.Handle();
+                validator.ValidateAndThrow(command);
+                command.Handle();
                 return ProcessStatus.isSuccess;
             }
             catch (Exception ex)
@@ -75,13 +77,31 @@ namespace fimple_bootcamp_week_1_homework.Controllers
 
         public ProcessStatus DeleteBook(int id)
         {
-            DeleteBookCommand query = new DeleteBookCommand(_dbContext);
+            DeleteBookCommand command = new DeleteBookCommand(_dbContext);
             DeleteBookCommandValidator validator = new DeleteBookCommandValidator();
-            query.id = id;
+            command.id = id;
             try
             {
-                validator.ValidateAndThrow(query);
-                query.Handle();
+                validator.ValidateAndThrow(command);
+                command.Handle();
+                return ProcessStatus.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
+        }
+        public ProcessStatus UpdateBook(int id, UpdateBookModel model)
+        {
+            UpdateBookCommand command = new UpdateBookCommand(_dbContext);
+            UpdateBookCommandValidator validator = new UpdateBookCommandValidator();
+            command.Id = id;
+            command.Model = model;
+            try
+            {
+                validator.ValidateAndThrow(command);
+                command.Handle();
                 return ProcessStatus.isSuccess;
             }
             catch (Exception ex)
