@@ -23,14 +23,12 @@ namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.
             var Member = _dbContext.Members.FirstOrDefault(book => book.Id == Id);
             if (Member is null)
             {
-                throw new InvalidOperationException($"{Id} numarasına sahip bir kitap bulunamadı!");
+                throw new ArgumentException($"{Id} numarasına sahip bir üye bulunamadı!");
             }
-            /*if (!(_dbContext.Authors.Any(x => x.Id == Model.AuthorId)))
-                throw new InvalidOperationException("Girilen ID'ye sahip bir yazar bulunamadı!");
 
-            Member.Title = Model.Title != "string" ? Model.Title : Member.Title;
-            Member.AuthorId = Model.AuthorId != default ? Model.AuthorId : Member.AuthorId;
-            Member.PublishDate = Model.PublishDate != default ? Model.PublishDate : Member.PublishDate;*/
+            Member.Name = Model.Name != "string" ? Model.Name : Member.Name;
+            Member.Surname = Model.Surname != default ? Model.Surname : Member.Surname;
+            Member.BirthDay = Model.BirthDay != default ? Model.BirthDay : Member.BirthDay;
             _dbContext.SaveChanges();
         }
     }
