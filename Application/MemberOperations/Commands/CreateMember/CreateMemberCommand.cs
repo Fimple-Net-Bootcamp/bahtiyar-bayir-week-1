@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,6 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.CreateMember
 {
-    public class CreateMemberModel
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string City { get; set; }
-        public DateTime BirthDay { get; set; }
-
-    }
     internal class CreateMemberCommand
     {
         public CreateMemberModel Model { get; set; }

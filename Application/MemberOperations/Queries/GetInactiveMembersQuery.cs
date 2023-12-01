@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,11 @@ namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Queries
             _mapper = mapper;
         }
 
-        public List<MembersViewModel> Handle()
+        public List<MemberViewModel> Handle()
         {
             var Members = _dbContext.Members.Where(x => x.State == false)
                                             .OrderBy(x => x.Id).ToList();
-            return new List<MembersViewModel>(_mapper.Map<List<MembersViewModel>>(Members));
+            return new List<MemberViewModel>(_mapper.Map<List<MemberViewModel>>(Members));
         }
     }
 }

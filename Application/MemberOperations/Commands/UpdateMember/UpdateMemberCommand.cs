@@ -1,4 +1,5 @@
 ﻿using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.UpdateMember
 {
-    public class UpdateMemberModel
-    {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string City { get; set; }
-        public DateTime BirthDay { get; set; }
-    }
-
     internal class UpdateMemberCommand
     {
         public int Id { get; set; }

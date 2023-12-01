@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.Application.MemberOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,12 @@ namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Queries
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        public MembersViewModel Handle()
+        public MemberViewModel Handle()
         {
             var member = _dbContext.Members.FirstOrDefault(b => b.Id == id);
             if (member is null)
                 throw new ArgumentException($"{id} numarasına sahip bir üye bulunamadı!");
-            return _mapper.Map<MembersViewModel>(member);
+            return _mapper.Map<MemberViewModel>(member);
         }
     }
 }
