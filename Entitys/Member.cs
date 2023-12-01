@@ -11,7 +11,7 @@ namespace fimple_bootcamp_week_1_homework.Entitys
         public string City { get; set; }
         public DateTime BirthDay { get; set; }
 
-        public Boolean Status { get; set; }
+        public Boolean State { get; set; }
 
     }
 }
