@@ -8,6 +8,7 @@ using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             return result;
         }
 
-        /*public AuthorViewModel GetAuthorById(int id)
+        public AuthorViewModel GetAuthorById(int id)
         {
             GetAuthorByIDQuery query = new GetAuthorByIDQuery(_dbContext, _mapper);
             GetAuthorByIDQueryValidator validator = new();
@@ -54,7 +55,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        public ProcessStatus CreateAuthor(CreateAuthorModel model)
+        /*public ProcessStatus CreateAuthor(CreateAuthorModel model)
         {
 
             CreateAuthorCommand command = new CreateAuthorCommand(_dbContext, _mapper);
