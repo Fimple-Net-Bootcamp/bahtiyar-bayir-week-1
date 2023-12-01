@@ -105,7 +105,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             BookController BookCtrl = new(dbContext, mapper, logger);
             CreateBorrowingRecordModel model = new();
 
-            logger.WriteTitle(ConsoleColor.Blue, "1 - Ödünç Alma Kaydı");
+            logger.WriteTitle(ConsoleColor.Blue, "1 - Ödünç Alma Kaydı ");
             logger.WriteMessage(false, ConsoleColor.Yellow, "Ödünç alınacak kitap ID'sini girin>");
             model.BookId = int.Parse(Console.ReadLine());
             logger.WriteMessage(false, ConsoleColor.White, "\n\nÜye numarasını girin (Bir üye en fazla 10 kitap alabilir!)>");
@@ -113,7 +113,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
 
             var book = BookCtrl.GetBookById(model.BookId);
             int memberBookCount = controller.GetNumberOfBooksBorrowingByTheUser(model.MemberId);
-            if (memberBookCount < MaxBookCount && book.State == true)
+            if (memberBookCount < MaxBookCount && (book is not null && book.State == true))
             {
                 if (controller.CreateBorrowingRecords(model) == ProcessStatus.isSuccess)
                 {
@@ -124,7 +124,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             else
             {
                 if(memberBookCount >= MaxBookCount)   logger.WriteMessage(true, ConsoleColor.White, "Bu üye hali hazırda ", ConsoleColor.Red, memberBookCount, ConsoleColor.White, " adet kitap ödünç almış!");
-                else if(!book.State) logger.WriteMessage(true, ConsoleColor.Red, book.Title, ConsoleColor.White, " isimli kitap hali hazırda başka bir üye/okuma odası tarafında alınmış!");
+                else if((book is not null && book.State == true)) logger.WriteMessage(true, ConsoleColor.Red, book.Title, ConsoleColor.White, " isimli kitap hali hazırda başka bir üye/okuma odası tarafında alınmış!");
             }
             Console.ReadKey();
         }
@@ -151,7 +151,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintListofAllBorrowingRecords()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "4 - Ödünç Alma Kayıtları");
+            logger.WriteTitle(ConsoleColor.Blue, " 3 - Ödünç Alma Kayıtları");
             BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
             logger.WriteMessage(true, ConsoleColor.Cyan, "No  | BID -    Kitap Başlığı                         | MID -   Üye Adı Soyadı                         | İşlem Tarihi | Teslim Durumu\r\n" + new string('-', 143));
             var records = controller.GetBorrowingRecords();
@@ -323,7 +323,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintOnlyAvailableForBorrowBookList()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "9 - Alınabilir Kitaplar Listesi");
+            logger.WriteTitle(ConsoleColor.Blue, " 9 - Alınabilir Kitaplar Listesi");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -               Kitap Başlığı              |              Yazar             | Yayın Tarihi |   Durumu\r\n" + new string('-', 143));
             BookController controller = new BookController(dbContext, mapper, logger);
             var bookList = controller.GetOnlyAvailableBooks();
@@ -519,7 +519,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintMemberById()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, " 16 - ID'ye Göre Üye Kaydı Görüntüleme");
+            logger.WriteTitle(ConsoleColor.Blue, " 176- ID'ye Göre Üye Kaydı Görüntüleme");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz üye ID'sini girin>");
             int id = int.Parse(Console.ReadLine());
             MemberController controller = new MemberController(dbContext, mapper, logger);
@@ -597,7 +597,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void CreateAuthorRecord()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "20 - Yeni Yazar Kaydı");
+            logger.WriteTitle(ConsoleColor.Blue, "19 - Yeni Yazar Kaydı");
             CreateAuthorModel model = new();
             logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
             logger.WriteMessage(false, ConsoleColor.White, $"{"Adı:",-40}"); model.Name = Console.ReadLine();
@@ -622,7 +622,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void DeleteAuthorRecord()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "21 - Yazar Kaydı Silme");
+            logger.WriteTitle(ConsoleColor.Blue, "20 - Yazar Kaydı Silme");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz yazarnin ID numarasını giriniz:\r\n");
             int id = int.Parse(Console.ReadLine());
             AuthorController controller = new(dbContext, mapper, logger);
@@ -652,7 +652,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void UpdateAuthorRecord()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "22 - Yazar Kaydı Güncelleme ");
+            logger.WriteTitle(ConsoleColor.Blue, "21 - Yazar Kaydı Güncelleme ");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını güncellemek istediğiniz yazarnin ID numarasını giriniz:\r\n");
             int id = int.Parse(Console.ReadLine());
             AuthorController controller = new(dbContext, mapper, logger);
@@ -681,7 +681,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintAllAuthorList()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "23 - Kayıtlı Yazarler Listesi ");
+            logger.WriteTitle(ConsoleColor.Blue, "22 - Kayıtlı Yazarler Listesi ");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "MID -        Yazar Adı Soyadı                                              | Yazdığı Kitap Sayısı\r\n" + new string('-', 143)); 
             AuthorController controller = new AuthorController(dbContext, mapper, logger);
             var AuthorList = controller.GetAuthors();
@@ -705,7 +705,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintAuthorById()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, " 24 - ID'ye Göre Yazar Kaydı Görüntüleme");
+            logger.WriteTitle(ConsoleColor.Blue, " 23 - ID'ye Göre Yazar Kaydı Görüntüleme");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz yazar ID'sini girin>");
             int id = int.Parse(Console.ReadLine());
             AuthorController controller = new AuthorController(dbContext, mapper, logger);
