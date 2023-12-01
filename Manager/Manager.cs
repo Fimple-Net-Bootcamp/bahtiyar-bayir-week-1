@@ -76,7 +76,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "3": CollectBooksFromReadingRoom(); break;*/
                     case "4": CreateBookRecord(); break;
                     case "5": DeleteBookRecord(); break;
-                    case "6":UpdateBookRecord(); break; 
+                    case "6": UpdateBookRecord(); break; 
                     case "7": PrintListofAllBooks(); break;
                     case "8": PrintBookByTitle(); break;
                     case "9": PrintOnlyAvailableForBorrowBookList(); break;
@@ -164,7 +164,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void UpdateBookRecord()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "6 - Kitap Kaydı Güncelleme");
+            logger.WriteTitle(ConsoleColor.Blue, "6 - Kitap Kaydı Güncelleme ");
             logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını güncellemek istediğiniz kitabın ID numarasını giriniz:\r\n");
             int id = int.Parse(Console.ReadLine());
             BookController controller = new(dbContext, mapper, logger);
@@ -200,7 +200,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintListofAllBooks()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "7 - List of Registered Books ");
+            logger.WriteTitle(ConsoleColor.Blue, "7 - Kayıtlı Kitaplar Listesi ");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -               Kitap Başlığı              |              Yazar             | Yayın Tarihi |   Durumu\r\n" + new string('-', 143));
             BookController controller = new BookController(dbContext, mapper, logger);
             var bookList = controller.GetBooks();
@@ -224,8 +224,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintBookByTitle()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "7 - List of Registered Books ");
-            logger.WriteMessage(true, ConsoleColor.Yellow, "Enter the title of the book you want to see>");
+            logger.WriteTitle(ConsoleColor.Blue, " 8 - ID'ye Göre Kitap Kaydı Görüntüleme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz kitap ID'sini girin>");
             int id = int.Parse(Console.ReadLine());
             BookController controller = new BookController(dbContext, mapper, logger);
             var book = controller.GetBookById(id);
@@ -251,7 +251,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintOnlyAvailableForBorrowBookList()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "9 - Alınabilir Kitaplar Listesi ");
+            logger.WriteTitle(ConsoleColor.Blue, "9 - Alınabilir Kitaplar Listesi");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -               Kitap Başlığı              |              Yazar             | Yayın Tarihi |   Durumu\r\n" + new string('-', 143));
             BookController controller = new BookController(dbContext, mapper, logger);
             var bookList = controller.GetOnlyAvailableBooks();
