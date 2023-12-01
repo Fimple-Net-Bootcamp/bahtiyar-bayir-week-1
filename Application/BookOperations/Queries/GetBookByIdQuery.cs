@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 {
-    internal class GetBookByIdQuery
+    internal class GetBookByIDQuery
     {
         public int id;
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
-        public GetBookByIdQuery(ILibraryDbContext dbContext, IMapper mapper)
+        public GetBookByIDQuery(ILibraryDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
