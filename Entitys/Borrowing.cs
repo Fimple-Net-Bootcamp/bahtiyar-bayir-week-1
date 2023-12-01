@@ -12,7 +12,9 @@ namespace fimple_bootcamp_week_1_homework.Entitys
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int BookId { get; set; }
+        public Book Book { get; set; }
         public int BorrowerId { get; set; }
+        public Member Member { get; set; }
         public DateTime Date { get; set; }
     }
 }

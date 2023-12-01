@@ -3,6 +3,7 @@ using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Create
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Queries;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
+using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using System;
@@ -24,6 +25,7 @@ namespace fimple_bootcamp_week_1_homework.Common
             CreateMap<Member, MemberViewModel>();
             CreateMap<CreateAuthorModel, Author>();
             CreateMap<Author, AuthorViewModel>();
+            CreateMap<Borrowing, BorrowingRecordViewModel>();
         }
     }
 }
