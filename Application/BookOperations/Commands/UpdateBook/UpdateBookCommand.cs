@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -32,12 +32,12 @@ namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.
             {
                 throw new InvalidOperationException($"{Id} numarasına sahip bir kitap bulunamadı!");
             }
-            if (!(_dbContext.Authors.Any(x => x.Id == Model.AuthorId)))
+            /*if (!(_dbContext.Authors.Any(x => x.Id == Model.AuthorId)))
                 throw new InvalidOperationException("Girilen ID'ye sahip bir yazar bulunamadı!");
 
             Member.Title = Model.Title != "string" ? Model.Title : Member.Title;
             Member.AuthorId = Model.AuthorId != default ? Model.AuthorId : Member.AuthorId;
-            Member.PublishDate = Model.PublishDate != default ? Model.PublishDate : Member.PublishDate;
+            Member.PublishDate = Model.PublishDate != default ? Model.PublishDate : Member.PublishDate;*/
             _dbContext.SaveChanges();
         }
     }
