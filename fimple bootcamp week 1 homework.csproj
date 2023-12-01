@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
+    <Folder Include="DTOs\MemberDTO\" />
   </ItemGroup>
 
 </Project>

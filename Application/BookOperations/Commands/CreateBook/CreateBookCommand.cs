@@ -9,14 +9,6 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook
 {
-
-    public class CreateBookModel
-    {
-        public string Title { get; set; }
-        public int AuthorId { get; set; }
-        public int PageCount { get; set; }
-        public DateTime PublishDate { get; set; }
-    }
     internal class CreateBookCommand
     {
         public CreateBookModel Model { get; set; }

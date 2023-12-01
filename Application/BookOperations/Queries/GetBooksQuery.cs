@@ -11,14 +11,6 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 {
-    public class BooksViewModel
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public DateTime PublishDate { get; set; }
-        public Boolean State { get; set; }
-    }
     internal class GetBooksQuery
     {
         private readonly ILibraryDbContext _dbContext;

@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.DeleteBook;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using System.Web.Mvc;
+using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 
 namespace fimple_bootcamp_week_1_homework.Controllers
 {
