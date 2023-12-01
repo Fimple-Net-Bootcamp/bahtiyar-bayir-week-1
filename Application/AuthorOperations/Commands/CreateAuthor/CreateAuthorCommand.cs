@@ -23,7 +23,8 @@ namespace fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.
 
         public void Handle()
         {
-            var author = _dbContext.Authors.SingleOrDefault(x => x.GetName().ToLower().Trim() == $"{Model.Name} {Model.Surname}".ToLower().Trim());
+            string name = (Model.Name + " " + Model.Surname).ToLower().Trim();
+            var author = _dbContext.Authors.Where(m => new string(m.Name + " " + m.Surname).ToLower().Trim() == name).SingleOrDefault();
             if (author is not null)
                 throw new InvalidOperationException($"Bu isimde bir yazar kaydı daha önceden mevcut! Üye numarası {author.Id}");
 
