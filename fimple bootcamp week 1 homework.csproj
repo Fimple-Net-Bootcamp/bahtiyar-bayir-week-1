@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\AuthorOperations\Command\" />
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
   </ItemGroup>
