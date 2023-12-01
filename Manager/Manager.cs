@@ -79,9 +79,9 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "6":UpdateBookRecord(); break; 
                     case "7": PrintListofAllBooks(); break;
                     case "8": PrintBookByTitle(); break;
-                    /*case "9": PrintOnlyAvailableForBorrowBookList(); break;
+                    case "9": PrintOnlyAvailableForBorrowBookList(); break;
                     case "10": PrintOnlyUnavailableForBorrowBookList(); break;
-                    case "11": CreateMemberRecord(); break;
+                    /*case "11": CreateMemberRecord(); break;
                     case "12": DeleteMemberRecord(); break;
                     case "13": UpdateMemberRecord(); break;
                     case "14": ChangeMemberStatus(); break;
@@ -241,6 +241,54 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                             ConsoleColor.White, $" {book.PublishDate.ToString("yyyy.MM.dd")}  | ",
                                             book.State ? ConsoleColor.Green : ConsoleColor.Red, book.State ? "Alınabilir" : "Alınamaz"
             );
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "9 List the books that can be borrowedd" menu.
+        /// </summary>
+        internal void PrintOnlyAvailableForBorrowBookList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "9 - Alınabilir Kitaplar Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -               Kitap Başlığı              |              Yazar             | Yayın Tarihi |   Durumu\r\n" + new string('-', 143));
+            BookController controller = new BookController(dbContext, mapper, logger);
+            var bookList = controller.GetOnlyAvailableBooks();
+            bookList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Title,-40}",
+                                            ConsoleColor.White, $" | {x.Author,-30} | ",
+                                            ConsoleColor.White, $" {x.PublishDate.ToString("yyyy.MM.dd")}  | ",
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? "Alınabilir" : "Alınamaz");
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "10  List the books that cannot be borrowedd" menu.
+        /// </summary>
+        internal void PrintOnlyUnavailableForBorrowBookList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "10 - Alınmış Kitaplar Listesi");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -               Kitap Başlığı              |              Yazar             | Yayın Tarihi |   Durumu\r\n" + new string('-', 143));
+            BookController controller = new BookController(dbContext, mapper, logger);
+            var bookList = controller.GetOnlyUnavailableBooks();
+            bookList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Title,-40}",
+                                            ConsoleColor.White, $" | {x.Author,-30} | ",
+                                            ConsoleColor.White, $" {x.PublishDate.ToString("yyyy.MM.dd")}  | ",
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? "Alınabilir" : "Alınamaz");
+            });
+
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
             Console.ReadKey();
         }

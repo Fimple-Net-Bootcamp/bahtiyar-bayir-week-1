@@ -56,6 +56,20 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
+        public List<BooksViewModel> GetOnlyAvailableBooks()
+        {
+            GetAvailableBooksQuery query = new GetAvailableBooksQuery(_dbContext, _mapper);
+            var result = query.Handle();
+            return result;
+        }
+
+        public List<BooksViewModel> GetOnlyUnavailableBooks()
+        {
+            GetUnavailableBooksQuery query = new GetUnavailableBooksQuery(_dbContext, _mapper);
+            var result = query.Handle();
+            return result;
+        }
+
         public ProcessStatus CreateBook(CreateBookModel model)
         {
 
