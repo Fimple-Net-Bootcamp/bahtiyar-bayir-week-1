@@ -138,7 +138,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
                         CreateBorrowingRecordModelForMember model = new();
                         model.BookId = bookId;
                         logger.WriteMessage(false, ConsoleColor.White, "\n\nÜye numarasını girin>");
-                        model.MemberId = int.Parse(Console.ReadLine()); ;
+                        model.MemberId = int.Parse(Console.ReadLine());
                         if(controller.CreateBorrowingRecords(model) == ProcessStatus.isSuccess)
                         {
                             BookController BookCtrl = new(dbContext, mapper, logger);
@@ -511,6 +511,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             logger.WriteTitle(ConsoleColor.Blue, "15 - Kayıtlı Üyeler Listesi ");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
             MemberController controller = new MemberController(dbContext, mapper, logger);
+            BorrowingController BCtrl = new BorrowingController(dbContext, mapper, logger);
             var memberList = controller.GetMembers();
             memberList.ForEach(x =>
             {
@@ -519,8 +520,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                             ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-46}",
                                             ConsoleColor.White, $" | {x.City, -21} | ",
                                             ConsoleColor.White, $" {x.BirthDay.ToString("yyyy.MM.dd")}  | ",
-                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State? $"{"Aktif",-7}": $"{"Pasif",-7}", ConsoleColor.White, " | "
-                                            /*ConsoleColor.White, "He/She borrowed ", ConsoleColor.DarkBlue, m.BorrowedBooks.Count, ConsoleColor.White, " number of books.""*/);
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State? $"{"Aktif",-7}": $"{"Pasif",-7}", ConsoleColor.White, " | ", 
+                                            ConsoleColor.White, "Üye ", ConsoleColor.DarkBlue, BCtrl.GetNumberOfBooksBorrowingByTheUser(x.Id), ConsoleColor.White, " tane kitap ödünç almış.");
             });
 
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
@@ -537,6 +538,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz üye ID'sini girin>");
             int id = int.Parse(Console.ReadLine());
             MemberController controller = new MemberController(dbContext, mapper, logger);
+            BorrowingController BCtrl = new BorrowingController(dbContext, mapper, logger);
             var member = controller.GetMemberById(id);
             if (member is null)
             {
@@ -548,8 +550,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                             ConsoleColor.Yellow, $"{member.Name + " " + member.Surname,-46}",
                                             ConsoleColor.White, $" | {member.City,-21} | ",
                                             ConsoleColor.White, $" {member.BirthDay.ToString("yyyy.MM.dd")}  | ",
-                                            member.State ? ConsoleColor.Green : ConsoleColor.Red, member.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | "
-                                            );
+                                            member.State ? ConsoleColor.Green : ConsoleColor.Red, member.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | ",
+                                            ConsoleColor.White, "Üye ", ConsoleColor.DarkBlue, BCtrl.GetNumberOfBooksBorrowingByTheUser(member.Id), ConsoleColor.White, " tane kitap ödünç almış.");
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
             Console.ReadKey();
         }
@@ -563,6 +565,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             logger.WriteTitle(ConsoleColor.Blue, "17 - Kayıtlı Aktif Üyeler Listesi ");
             logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
             MemberController controller = new MemberController(dbContext, mapper, logger);
+            BorrowingController BCtrl = new BorrowingController(dbContext, mapper, logger);
             var memberList = controller.GetOnlyActiveMembers();
             memberList.ForEach(x =>
             {
@@ -571,8 +574,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                             ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-46}",
                                             ConsoleColor.White, $" | {x.City,-21} | ",
                                             ConsoleColor.White, $" {x.BirthDay.ToString("yyyy.MM.dd")}  | ",
-                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | "
-                                            /*ConsoleColor.White, "He/She borrowed ", ConsoleColor.DarkBlue, m.BorrowedBooks.Count, ConsoleColor.White, " number of books.""*/);
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | ",
+                                            ConsoleColor.White, "Üye ", ConsoleColor.DarkBlue, BCtrl.GetNumberOfBooksBorrowingByTheUser(x.Id), ConsoleColor.White, " tane kitap ödünç almış.");
             });
 
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
@@ -585,8 +588,8 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintOnlyPassiveMemberList()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "17 - Kayıtlı Pasif Üyeler Listesi ");
-            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            logger.WriteTitle(ConsoleColor.Blue, "18 - Kayıtlı Pasif Üyeler Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas\r\n" + new string('-', 143));
             MemberController controller = new MemberController(dbContext, mapper, logger);
             var memberList = controller.GetOnlyInactiveMembers();
             memberList.ForEach(x =>

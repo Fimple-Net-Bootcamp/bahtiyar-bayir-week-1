@@ -68,7 +68,10 @@ namespace fimple_bootcamp_week_1_homework.Controllers
 
         public int GetNumberOfBooksBorrowingByTheUser(int id)
         {
-            return 0;
+            GetMemberBorrowingCountQuery query = new(_dbContext);
+            query.id = id;
+            var count = query.Handle();
+            return count;
         }
     }
 }
