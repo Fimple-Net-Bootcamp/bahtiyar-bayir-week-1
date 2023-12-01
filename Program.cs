@@ -17,7 +17,6 @@ var _host = Host.CreateDefaultBuilder().ConfigureServices(
         services.AddDbContext<LibraryDbContext>(options => options.UseInMemoryDatabase(databaseName: "LibraryManagerDB"));
         services.AddScoped<ILibraryDbContext>(provider => provider.GetService<LibraryDbContext>());
         services.AddScoped<ICustomisedMessagePrinter, CustomisedMessagePrinter>();
-        services.AddScoped<ICustomisedMessagePrinter, CustomisedMessagePrinter>();
         services.AddScoped<IManager, Manager>();
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }).Build();
@@ -28,8 +27,6 @@ using (var scope = _host.Services.CreateAsyncScope())
     DataGenerator.Initialize(services);
 };
 
-var _libraryDbContext = _host.Services.GetRequiredService<ILibraryDbContext>();
-var _logger = _host.Services.GetRequiredService<ICustomisedMessagePrinter>();
 var _manager = _host.Services.GetRequiredService<IManager>();
 
 _manager.Start();

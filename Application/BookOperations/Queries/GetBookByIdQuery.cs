@@ -11,6 +11,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
 {
     internal class GetBookByIdQuery
     {
+        public string title;
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
         public GetBookByIdQuery(ILibraryDbContext dbContext, IMapper mapper)
@@ -18,11 +19,10 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
             _dbContext = dbContext;
             _mapper = mapper;
         }
-
-        public BooksViewModel Handle(int id)
+        public BooksViewModel Handle()
         {
-            var bookList = _dbContext.Books.Include(x => x.Author).FirstOrDefault(b => b.Id == id);
-            return _mapper.Map<BooksViewModel>(bookList);
+            var book = _dbContext.Books.Include(x => x.Author).FirstOrDefault(b => b.Title.ToLower().Trim() == title.ToLower().Trim());
+            return _mapper.Map<BooksViewModel>(book);
         }
     }
 }

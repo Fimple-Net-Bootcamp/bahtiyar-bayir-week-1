@@ -15,6 +15,6 @@ namespace fimple_bootcamp_week_1_homework.Entitys
         public int AuthorId { get; set; }
         public Author Author { get; set; }
         public DateTime PublishDate { get; set; }
-
+        public Boolean State { get; set; } = true;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Queries;
 using fimple_bootcamp_week_1_homework.Entitys;
 using System;
@@ -13,6 +14,7 @@ namespace fimple_bootcamp_week_1_homework.Common
     {
         public MappingProfile()
         {
+            CreateMap<CreateBookModel, Book>();
             CreateMap<Book, BooksViewModel>().ForMember(
                 dest => dest.Author, opt => opt.MapFrom(src => src.Author.GetName()));
         }

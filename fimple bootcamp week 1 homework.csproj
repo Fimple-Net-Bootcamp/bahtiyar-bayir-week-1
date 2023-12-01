@@ -13,6 +13,7 @@
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="11.8.1" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.14" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
@@ -20,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\BookOperations\Commands\CreateBook\" />
-    <Folder Include="Entitys\" />
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
   </ItemGroup>

@@ -17,6 +17,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
         public string Title { get; set; }
         public string Author { get; set; }
         public DateTime PublishDate { get; set; }
+        public Boolean State { get; set; }
     }
     internal class GetBooksQuery
     {

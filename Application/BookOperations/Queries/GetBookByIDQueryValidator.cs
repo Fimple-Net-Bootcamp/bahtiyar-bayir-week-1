@@ -11,7 +11,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Queries
     {
         public GetBookByIDQueryValidator()
         {
-            RuleFor(command => command.Title).NotEmpty().MinimumLength(4).MaximumLength(10);
+            RuleFor(command => command.title).NotEmpty().MinimumLength(4).MaximumLength(10);
         }
     }
 }
