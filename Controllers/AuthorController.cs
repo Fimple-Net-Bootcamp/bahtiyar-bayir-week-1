@@ -91,7 +91,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        /*public ProcessStatus UpdateAuthor(int id, UpdateAuthorModel model)
+        public ProcessStatus UpdateAuthor(int id, UpdateAuthorModel model)
         {
             UpdateAuthorCommand command = new UpdateAuthorCommand(_dbContext);
             UpdateAuthorCommandValidator validator = new UpdateAuthorCommandValidator();
@@ -108,6 +108,6 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
                 return ProcessStatus.isFailed;
             }
-        }*/
+        }
     }
 }
