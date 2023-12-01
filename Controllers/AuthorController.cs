@@ -2,7 +2,6 @@
 using fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.CreateAuthor;
 using fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.DeleteAuthor;
 using fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.UpdateAuthor;
-using fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.UpdateAuthorState;
 using fimple_bootcamp_week_1_homework.Application.AuthorOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
@@ -74,7 +73,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        /*public ProcessStatus DeleteAuthor(int id)
+        public ProcessStatus DeleteAuthor(int id)
         {
             DeleteAuthorCommand command = new DeleteAuthorCommand(_dbContext);
             DeleteAuthorCommandValidator validator = new DeleteAuthorCommandValidator();
@@ -92,7 +91,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        public ProcessStatus UpdateAuthor(int id, UpdateAuthorModel model)
+        /*public ProcessStatus UpdateAuthor(int id, UpdateAuthorModel model)
         {
             UpdateAuthorCommand command = new UpdateAuthorCommand(_dbContext);
             UpdateAuthorCommandValidator validator = new UpdateAuthorCommandValidator();
