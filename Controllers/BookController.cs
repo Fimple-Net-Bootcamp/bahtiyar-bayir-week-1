@@ -16,6 +16,7 @@ using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Delete
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using System.Web.Mvc;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
+using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBookState;
 
 namespace fimple_bootcamp_week_1_homework.Controllers
 {
@@ -107,12 +108,31 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 return ProcessStatus.isFailed;
             }
         }
+
         public ProcessStatus UpdateBook(int id, UpdateBookModel model)
         {
             UpdateBookCommand command = new UpdateBookCommand(_dbContext);
             UpdateBookCommandValidator validator = new UpdateBookCommandValidator();
             command.Id = id;
             command.Model = model;
+            try
+            {
+                validator.ValidateAndThrow(command);
+                command.Handle();
+                return ProcessStatus.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
+        }
+
+        public ProcessStatus UpdateBookState(int id)
+        {
+            UpdateBookStateCommand command = new UpdateBookStateCommand(_dbContext);
+            UpdateBookStateCommandValidator validator = new UpdateBookStateCommandValidator();
+            command.id = id;
             try
             {
                 validator.ValidateAndThrow(command);
