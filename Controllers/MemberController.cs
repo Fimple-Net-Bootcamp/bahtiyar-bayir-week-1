@@ -62,7 +62,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             return result;
         }
 
-        public List<MemberViewModel> GetOnlyInctiveMembers()
+        public List<MemberViewModel> GetOnlyInactiveMembers()
         {
             GetInactiveMembersQuery query = new GetInactiveMembersQuery(_dbContext, _mapper);
             var result = query.Handle();

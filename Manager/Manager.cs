@@ -4,6 +4,7 @@ using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Create
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
@@ -81,23 +82,23 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "5": DeleteBookRecord(); break;
                     case "6": UpdateBookRecord(); break; 
                     case "7": PrintListofAllBooks(); break;
-                    case "8": PrintBookByTitle(); break;
+                    case "8": PrintBookById(); break;
                     case "9": PrintOnlyAvailableForBorrowBookList(); break;
                     case "10": PrintOnlyUnavailableForBorrowBookList(); break;
                     case "11": CreateMemberRecord(); break;
                     case "12": DeleteMemberRecord(); break;
-                    /*case "13": UpdateMemberRecord(); break;
+                    case "13": UpdateMemberRecord(); break;
                     case "14": ChangeMemberStatus(); break;
                     case "15": PrintAllMemberList(); break;
-                    case "16": GetMemberById(); break;
+                    case "16": PrintMemberById(); break;
                     case "17": PrintOnlyActiveMemberList(); break;
                     case "18": PrintOnlyPassiveMemberList(); break;
-                    case "19": PrintAllMembersWithBorrowedBooks(); break;
+                    /*case "19": PrintAllMembersWithBorrowedBooks(); break;*/
                     case "20": CreateAuthorRecord(); break;
                     case "21": DeleteAuthorRecord(); break;
                     case "22": UpdateAuthorRecord(); break;
                     case "23": PrintAllAuthorList(); break;
-                    case "24": GetAuthorById(); break;*/
+                    case "24": PrintAuthorById(); break;
                     case "25": loop = false; break;
                 }
             }
@@ -153,7 +154,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     }
                     else
                     {
-                        logger.WriteMessage(true, ConsoleColor.White, "Kitap kaydı yapılamadı!");
+                        logger.WriteMessage(true, ConsoleColor.White, "Kitap kaydı silme işlemi başarısız oldu!");
                     }
                 }
                 else logger.WriteMessage(true, ConsoleColor.White, "Kayıt silme işlemi iptal edildi.");
@@ -196,7 +197,6 @@ namespace fimple_bootcamp_week_1_homework.Manager
             Console.ReadKey();
         }
 
-
         /// <summary>
         ///  Function defined for the "7 List all books" menu.
         /// </summary>
@@ -224,7 +224,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         /// <summary>
         ///  Function defined for the "8 Get book by Title" menu.
         /// </summary>
-        internal void PrintBookByTitle()
+        internal void PrintBookById()
         {
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, " 8 - ID'ye Göre Kitap Kaydı Görüntüleme");
@@ -304,12 +304,11 @@ namespace fimple_bootcamp_week_1_homework.Manager
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "11 - Yeni Üye Kaydı");
             CreateMemberModel model = new();
-            logger.WriteMessage(true, ConsoleColor.Yellow, "Please enter the following information:\r\n\n");
-
-            logger.WriteMessage(true, ConsoleColor.White, $"{"Name:",-25}");        model.Name      = Console.ReadLine();
-            logger.WriteMessage(true, ConsoleColor.White, $"{"Surname:",-25}");     model.Surname   = Console.ReadLine();
-            logger.WriteMessage(true, ConsoleColor.White, $"{"City:",-25}");        model.City      = Console.ReadLine();
-            logger.WriteMessage(true, ConsoleColor.White, $"{"Birth Day:",-25}");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Adı:",-40}"); model.Name = Console.ReadLine();
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Soyadı:",-40}"); model.Surname = Console.ReadLine();
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Memleketi:",-40}"); model.City = Console.ReadLine();
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Doğum Tarihi*(gg.aa.yyyy):",-40}");
 
             if (DateTime.TryParse(Console.ReadLine(), out DateTime result)) model.BirthDay = result;
             else { logger.WriteMessage(true, ConsoleColor.White, "Girilen ", ConsoleColor.Red, "tarih", ConsoleColor.White, " formatı hatalı. Kayıt yapılamadı!\r\n"); Console.ReadKey(); return; }
@@ -324,6 +323,332 @@ namespace fimple_bootcamp_week_1_homework.Manager
                 logger.WriteMessage(true, ConsoleColor.White, "Üye kaydı yapılamadı!");
                 Console.ReadKey();
             }
+        }
+
+        /// <summary>
+        ///  Function defined for the "12 - Delete Member Record" menu.
+        /// </summary>
+        internal void DeleteMemberRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "12 - Üye Kaydı Silme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz üyenin ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            MemberController controller = new(dbContext, mapper, logger);
+            var member = controller.GetMemberById(id);
+            if (member is not null)
+            {
+                logger.WriteMessage(false, ConsoleColor.DarkYellow, "\nUyarı! ", ConsoleColor.Green, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(member.Name + " " + member.Surname)}", ConsoleColor.White, " isimli üyeyi silmek üzeresiniz onaylıyor musunuz? (Evet: e/E)");
+                if (Console.ReadLine().Trim().ToLower() == "e")
+                {
+                    if (controller.DeleteMember(id) == ProcessStatus.isSuccess)
+                    {
+                        logger.WriteMessage(true, ConsoleColor.Green, $"\n\n{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(member.Name + " " + member.Surname)}", ConsoleColor.White, " isimli üye kaydı başarıyla silindi.");
+                    }
+                    else
+                    {
+                        logger.WriteMessage(true, ConsoleColor.White, "Üye kaydı silme işlemi başarısız oldu!");
+                    }
+                }
+                else logger.WriteMessage(true, ConsoleColor.White, "Kayıt silme işlemi iptal edildi.");
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "12 Update member registration" menu.
+        /// </summary>
+        internal void UpdateMemberRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "13 - Kitap Kaydı Güncelleme ");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını güncellemek istediğiniz üyenin ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            MemberController controller = new(dbContext, mapper, logger);
+            var member = controller.GetMemberById(id);
+            if (member is not null)
+            {
+                UpdateMemberModel model = new();
+                logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Adı:",-40}");            model.Name = Console.ReadLine();
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Soyadı:",-40}");         model.Surname = Console.ReadLine();
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Memleketi:",-40}");            model.City = Console.ReadLine();
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Doğum Tarihi*(gg.aa.yyyy):",-40}");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime result)) model.BirthDay = result;
+                else { logger.WriteMessage(true, ConsoleColor.White, "Girilen ", ConsoleColor.Red, "tarih", ConsoleColor.White, " formatı hatalı. Kayıt yapılamadı!\r\n"); Console.ReadKey(); return; }
+                if (controller.UpdateMember(id, model) == ProcessStatus.isSuccess)
+                {
+                    logger.WriteMessage(true, ConsoleColor.Green, $"{model.Name + " " + model.Surname}", ConsoleColor.White, " isimli üye başarıyla güncellendi.");
+                }
+                else
+                {
+                    logger.WriteMessage(true, ConsoleColor.White, "\nKitap kaydı güncellenemedi!");
+                }
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "14 change member status" menu.
+        /// </summary>
+        internal void ChangeMemberStatus()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "14 - Üye Aktif/Pasif Durum Değiştirmesi");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen durmunu güncellemek istediğiniz üyenin ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            MemberController controller = new(dbContext, mapper, logger);
+            var member = controller.GetMemberById(id);
+            if (member is not null)
+            {
+                logger.WriteMessage(false, ConsoleColor.DarkYellow, "\nUyarı! ", ConsoleColor.Green, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(member.Name + " " + member.Surname)}", ConsoleColor.White, " isimli üyeyin durumunu ", member.State ? ConsoleColor.Red : ConsoleColor.Green, member.State ? "Pasif" : "Aktif", ConsoleColor.White, " üzeresiniz onaylıyor musunuz? (Evet: e/E)");
+                if (Console.ReadLine().Trim().ToLower() == "e")
+                {
+                    if (controller.UpdateMemberStatus(id) == ProcessStatus.isSuccess)
+                    {
+                        logger.WriteMessage(true, ConsoleColor.Green, $"\n\n{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(member.Name + " " + member.Surname)}", ConsoleColor.White, " isimli üyenin durumu başarıyla güncellendi.");
+                    }
+                    else
+                    {
+                        logger.WriteMessage(true, ConsoleColor.White, "Üye durum güncellemesi başarısız oldu!");
+                    }
+                }
+                else logger.WriteMessage(true, ConsoleColor.White, "Üye durum güncelleme işlemi iptal edildi.");
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "7 List all books" menu.
+        /// </summary>
+        internal void PrintAllMemberList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "15 - Kayıtlı Üyeler Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            MemberController controller = new MemberController(dbContext, mapper, logger);
+            var memberList = controller.GetMembers();
+            memberList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-46}",
+                                            ConsoleColor.White, $" | {x.City, -21} | ",
+                                            ConsoleColor.White, $" {x.BirthDay.ToString("yyyy.MM.dd")}  | ",
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State? $"{"Aktif",-7}": $"{"Pasif",-7}", ConsoleColor.White, " | "
+                                            /*ConsoleColor.White, "He/She borrowed ", ConsoleColor.DarkBlue, m.BorrowedBooks.Count, ConsoleColor.White, " number of books.""*/);
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "8 Get book by Title" menu.
+        /// </summary>
+        internal void PrintMemberById()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, " 16 - ID'ye Göre Üye Kaydı Görüntüleme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz üye ID'sini girin>");
+            int id = int.Parse(Console.ReadLine());
+            MemberController controller = new MemberController(dbContext, mapper, logger);
+            var member = controller.GetMemberById(id);
+            if (member is null)
+            {
+                Console.ReadKey();
+                return;
+            }
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            logger.WriteMessage(true, ConsoleColor.Magenta, $"{member.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{member.Name + " " + member.Surname,-46}",
+                                            ConsoleColor.White, $" | {member.City,-21} | ",
+                                            ConsoleColor.White, $" {member.BirthDay.ToString("yyyy.MM.dd")}  | ",
+                                            member.State ? ConsoleColor.Green : ConsoleColor.Red, member.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | "
+                                            );
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "9 List the active member" menu.
+        /// </summary>
+        internal void PrintOnlyActiveMemberList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "17 - Kayıtlı Aktif Üyeler Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            MemberController controller = new MemberController(dbContext, mapper, logger);
+            var memberList = controller.GetOnlyActiveMembers();
+            memberList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-46}",
+                                            ConsoleColor.White, $" | {x.City,-21} | ",
+                                            ConsoleColor.White, $" {x.BirthDay.ToString("yyyy.MM.dd")}  | ",
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | "
+                                            /*ConsoleColor.White, "He/She borrowed ", ConsoleColor.DarkBlue, m.BorrowedBooks.Count, ConsoleColor.White, " number of books.""*/);
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "18  List the passive member" menu.
+        /// </summary>
+        internal void PrintOnlyPassiveMemberList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "17 - Kayıtlı Pasif Üyeler Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     Üye Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            MemberController controller = new MemberController(dbContext, mapper, logger);
+            var memberList = controller.GetOnlyInactiveMembers();
+            memberList.ForEach(x =>
+            {
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-46}",
+                                            ConsoleColor.White, $" | {x.City,-21} | ",
+                                            ConsoleColor.White, $" {x.BirthDay.ToString("yyyy.MM.dd")}  | ",
+                                            x.State ? ConsoleColor.Green : ConsoleColor.Red, x.State ? $"{"Aktif",-7}" : $"{"Pasif",-7}", ConsoleColor.White, " | "
+                                            /*ConsoleColor.White, "He/She borrowed ", ConsoleColor.DarkBlue, m.BorrowedBooks.Count, ConsoleColor.White, " number of books.""*/);
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "20 - Creating Author Record" menu.
+        /// </summary>
+        internal void CreateAuthorRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "20 - Yeni Yazar Kaydı");
+            CreateAuthorModel model = new();
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Adı:",-40}"); model.Name = Console.ReadLine();
+            logger.WriteMessage(false, ConsoleColor.White, $"{"Soyadı:",-40}"); model.Surname = Console.ReadLine();
+
+            AuthorController controller = new(dbContext, mapper, logger);
+            if (controller.CreateAuthor(model) == ProcessStatus.isSuccess)
+            {
+                logger.WriteMessage(true, ConsoleColor.Green, $"{model.Name + " " + model.Surname}", ConsoleColor.White, " isimli kitap başarıyla kaydedildi.");
+                Console.ReadKey();
+            }
+            else
+            {
+                logger.WriteMessage(true, ConsoleColor.White, "yazar kaydı yapılamadı!");
+                Console.ReadKey();
+            }
+        }
+
+        /// <summary>
+        ///  Function defined for the "21 - Delete Author Record" menu.
+        /// </summary>
+        internal void DeleteAuthorRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "21 - Yazar Kaydı Silme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz yazarnin ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            AuthorController controller = new(dbContext, mapper, logger);
+            var Author = controller.GetAuthorById(id);
+            if (Author is not null)
+            {
+                logger.WriteMessage(false, ConsoleColor.DarkYellow, "\nUyarı! ", ConsoleColor.Green, $"{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Author.Name + " " + Author.Surname)}", ConsoleColor.White, " isimli yazaryi silmek üzeresiniz onaylıyor musunuz? (Evet: e/E)");
+                if (Console.ReadLine().Trim().ToLower() == "e")
+                {
+                    if (controller.DeleteAuthor(id) == ProcessStatus.isSuccess)
+                    {
+                        logger.WriteMessage(true, ConsoleColor.Green, $"\n\n{CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Author.Name + " " + Author.Surname)}", ConsoleColor.White, " isimli yazar kaydı başarıyla silindi.");
+                    }
+                    else
+                    {
+                        logger.WriteMessage(true, ConsoleColor.White, "yazar kaydı silme işlemi başarısız oldu!");
+                    }
+                }
+                else logger.WriteMessage(true, ConsoleColor.White, "Kayıt silme işlemi iptal edildi.");
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "22 Update Author registration" menu.
+        /// </summary>
+        internal void UpdateAuthorRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "22 - Yazar Kaydı Güncelleme ");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını güncellemek istediğiniz yazarnin ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            AuthorController controller = new(dbContext, mapper, logger);
+            var Author = controller.GetAuthorById(id);
+            if (Author is not null)
+            {
+                UpdateAuthorModel model = new();
+                logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen istenen bilgileri giriniz:\r\n\n");
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Adı:",-40}"); model.Name = Console.ReadLine();
+                logger.WriteMessage(false, ConsoleColor.White, $"{"Soyadı:",-40}"); model.Surname = Console.ReadLine();
+                if (controller.UpdateAuthor(id, model) == ProcessStatus.isSuccess)
+                {
+                    logger.WriteMessage(true, ConsoleColor.Green, $"{model.Name + " " + model.Surname}", ConsoleColor.White, " isimli yazar başarıyla güncellendi.");
+                }
+                else
+                {
+                    logger.WriteMessage(true, ConsoleColor.White, "\nKitap kaydı güncellenemedi!");
+                }
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "23 List all authors" menu.
+        /// </summary>
+        internal void PrintAllAuthorList()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "23 - Kayıtlı Yazarler Listesi ");
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "MID -        Author Name Surname                                           | Number of books written\r\n" + new string('-', 143)); 
+            AuthorController controller = new AuthorController(dbContext, mapper, logger);
+            var AuthorList = controller.GetAuthors();
+            AuthorList.ForEach(x =>
+            {
+
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
+                                            ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-68}"
+                                            /**/
+                                            );
+            });
+
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "24 Get Author by Title" menu.
+        /// </summary>
+        internal void PrintAuthorById()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, " 24 - ID'ye Göre Yazar Kaydı Görüntüleme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Kaydını görmek istediğiniz yazar ID'sini girin>");
+            int id = int.Parse(Console.ReadLine());
+            AuthorController controller = new AuthorController(dbContext, mapper, logger);
+            var Author = controller.GetAuthorById(id);
+            if (Author is null)
+            {
+                Console.ReadKey();
+                return;
+            }
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     yazar Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+
+            logger.WriteMessage(true, ConsoleColor.Magenta, $"{Author.Id,-3} - ",
+                                        ConsoleColor.Yellow, $"{Author.Name + " " + Author.Surname,-68}"
+                                        /**/);
+            logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
+            Console.ReadKey();
         }
     }
 }
