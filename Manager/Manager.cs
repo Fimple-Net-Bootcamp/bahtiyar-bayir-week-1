@@ -1,24 +1,13 @@
 ﻿using AutoMapper;
-using AutoMapper.Execution;
-using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
-using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
-using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace fimple_bootcamp_week_1_homework.Manager
 {
@@ -27,6 +16,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         private readonly ILibraryDbContext dbContext;
         private readonly ICustomisedMessagePrinter logger;
         private readonly IMapper mapper;
+        private readonly int MaxBookCount = 10;
 
         public Manager(ILibraryDbContext dbContext, ICustomisedMessagePrinter logger, IMapper mapper)
         {
@@ -49,14 +39,14 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                           ConsoleColor.Yellow, "\tKitap ödünç verme/geri alma işlemleri:\r\n",
                                           ConsoleColor.Magenta, "\t\t1  ", ConsoleColor.White, "- Üye kitap ödünç alma kaydı oluştur\r\n",
                                           ConsoleColor.Magenta, "\t\t2  ", ConsoleColor.White, "- Kitap geri alma işlemi\r\n",
-                                          ConsoleColor.Magenta, "\t\t3  ", ConsoleColor.White, "- Okuma odalarındaki kitapları geri topla\r\n",
+                                          ConsoleColor.Magenta, "\t\t3 ", ConsoleColor.White, " - Kitap ödünç almış üyeleri görüntüle\r\n",
                                           ConsoleColor.Yellow, "\tKitap işlemleri:\r\n",
                                           ConsoleColor.Magenta, "\t\t4  ", ConsoleColor.White, "- Kitap kaydı oluştur\r\n",
                                           ConsoleColor.Magenta, "\t\t5  ", ConsoleColor.White, "- Kitap kaydı sil\r\n",
                                           ConsoleColor.Magenta, "\t\t6  ", ConsoleColor.White, "- Kitap kaydı güncelle\r\n",
                                           ConsoleColor.Magenta, "\t\t7  ", ConsoleColor.White, "- Kayıtlı tüm kitapları listele\r\n",
                                           ConsoleColor.Magenta, "\t\t8  ", ConsoleColor.White, "- Kitap kaydı görüntüle (Kitap başlığına göre)\r\n",
-                                          ConsoleColor.Magenta, "\t\t9  ", ConsoleColor.White, "- Ödünç alınabilir kitapları listele\r\n",
+                                          ConsoleColor.Magenta, "\t\t9  ", ConsoleColor.White,"- Ödünç alınabilir kitapları listele\r\n",
                                           ConsoleColor.Magenta, "\t\t10 ", ConsoleColor.White, "- Ödünç alınmış kitapları listele \r\n",
                                           ConsoleColor.Yellow, "\tÜye işlemleri:\r\n",
                                           ConsoleColor.Magenta, "\t\t11 ", ConsoleColor.White, "- Üye kaydı oluştur\r\n",
@@ -67,20 +57,18 @@ namespace fimple_bootcamp_week_1_homework.Manager
                                           ConsoleColor.Magenta, "\t\t16 ", ConsoleColor.White, "- Üye kaydı görüntüle (Üye ID numarasına göre)\r\n",
                                           ConsoleColor.Magenta, "\t\t17 ", ConsoleColor.White, "- Aktif olan üyeleri listele\r\n",
                                           ConsoleColor.Magenta, "\t\t18 ", ConsoleColor.White, "- Pasif olan üyeleri listele\r\n",
-                                          ConsoleColor.Magenta, "\t\t19 ", ConsoleColor.White, "- Kitap ödünç almış üyeleri görüntüle\r\n",
                                           ConsoleColor.Yellow, "\tYazar işlemleri:\r\n",
-                                          ConsoleColor.Magenta, "\t\t20 ", ConsoleColor.White, "- Yazar kaydı oluştur\r\n",
-                                          ConsoleColor.Magenta, "\t\t21 ", ConsoleColor.White, "- Yazar kaydı sil\r\n",
-                                          ConsoleColor.Magenta, "\t\t22 ", ConsoleColor.White, "- Yazar kaydı güncelle\r\n",
-                                          ConsoleColor.Magenta, "\t\t23 ", ConsoleColor.White, "- Kayıtlı tüm yazarları listele\r\n",
-                                          ConsoleColor.Magenta, "\t\t24 ", ConsoleColor.White, "- Yazar kaydı görüntüle (Yazar ID numarasına göre)\r\n",
-                                          ConsoleColor.Magenta, "\t\t25 ", ConsoleColor.White, "- Exit\r\n\r\n");
+                                          ConsoleColor.Magenta, "\t\t19 ", ConsoleColor.White, "- Yazar kaydı oluştur\r\n",
+                                          ConsoleColor.Magenta, "\t\t20 ", ConsoleColor.White, "- Yazar kaydı sil\r\n",
+                                          ConsoleColor.Magenta, "\t\t21 ", ConsoleColor.White, "- Yazar kaydı güncelle\r\n",
+                                          ConsoleColor.Magenta, "\t\t22 ", ConsoleColor.White, "- Kayıtlı tüm yazarları listele\r\n",
+                                          ConsoleColor.Magenta, "\t\t23 ", ConsoleColor.White, "- Yazar kaydı görüntüle (Yazar ID numarasına göre)\r\n",
+                                          ConsoleColor.Magenta, "\t\t24 ", ConsoleColor.White, "- Exit\r\n\r\n");
                 logger.WriteMessage(false, ConsoleColor.Cyan, "Your choice>");
                 switch (Console.ReadLine())
                 {
 					case "1":  CreateBookBorrowingRecord(); 			break;
-                    //case "2":  ReturnBorrowedBook(); 					break;
-                    //case "3":  CollectBooksFromReadingRoom(); 		break;
+                    case "2":  ReturnBorrowedBook(); 					break;
 					case "3":  PrintListofAllBorrowingRecords();		break;
                     case "4":  CreateBookRecord(); 						break;
                     case "5":  DeleteBookRecord(); 						break;
@@ -97,13 +85,12 @@ namespace fimple_bootcamp_week_1_homework.Manager
 					case "16": PrintMemberById(); 						break; 
                     case "17": PrintOnlyActiveMemberList(); 			break;
                     case "18": PrintOnlyPassiveMemberList(); 			break;
-                    //case "19": PrintAllMembersWithBorrowedBooks(); 		break;
-                    case "20": CreateAuthorRecord(); 					break;
-                    case "21": DeleteAuthorRecord(); 					break;
-                    case "22": UpdateAuthorRecord(); 					break;
-                    case "23": PrintAllAuthorList(); 					break;
-					case "24": PrintAuthorById(); 						break; 
-                    case "25": loop = false; break;
+                    case "19": CreateAuthorRecord(); 					break;
+                    case "20": DeleteAuthorRecord(); 					break;
+                    case "21": UpdateAuthorRecord(); 					break;
+                    case "22": PrintAllAuthorList(); 					break;
+					case "23": PrintAuthorById(); 						break; 
+                    case "24": loop = false;                            break;
                 }
             }
         }
@@ -114,72 +101,70 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void CreateBookBorrowingRecord()
         {
             Console.Clear();
+            BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
+            BookController BookCtrl = new(dbContext, mapper, logger);
+            CreateBorrowingRecordModel model = new();
+
             logger.WriteTitle(ConsoleColor.Blue, "1 - Ödünç Alma Kaydı");
             logger.WriteMessage(false, ConsoleColor.Yellow, "Ödünç alınacak kitap ID'sini girin>");
-            int bookId = int.Parse(Console.ReadLine());
-
-            logger.WriteMessage(false, ConsoleColor.Yellow, "Kitap ödünç alma türünü girin:\r\n",
-                                        ConsoleColor.Magenta, "1-", ConsoleColor.White, " Okuma odasında okumak için\r\n",
-                                        ConsoleColor.Magenta, "2-", ConsoleColor.White, " Kütüphane dışına çıkarmak için\r\nSeçiminiz>");
-            string select = Console.ReadLine();
-            BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
-            switch (select)
-            {
-                case "1": 
-                    {
-                        CreateBorrowingRecordModelForReadingRoom model = new();
-                        model.BookId = bookId;
-                        logger.WriteMessage(false, ConsoleColor.White, "\n\nOkuma odası numarasını girin (501 ile 510 arası)>");
-                        model.RoomId = int.Parse(Console.ReadLine()); ;
-                        controller.CreateBorrowingRecords(model);
-                    } break;
-                case "2":
-                    {
-                        CreateBorrowingRecordModelForMember model = new();
-                        model.BookId = bookId;
-                        logger.WriteMessage(false, ConsoleColor.White, "\n\nÜye numarasını girin>");
-                        model.MemberId = int.Parse(Console.ReadLine());
-                        if(controller.CreateBorrowingRecords(model) == ProcessStatus.isSuccess)
-                        {
-                            BookController BookCtrl = new(dbContext, mapper, logger);
-                            BookCtrl.UpdateBookState(bookId);
-                            logger.WriteMessage(true, ConsoleColor.Green, "Ödünç alma kaydı başarılı");
-                        }
-                        
-                    }
-                    break;
-                default:
-                    {
-                        logger.WriteMessage(true, ConsoleColor.Red, "Girilen değer seçenekler arasında değil!");
-                        return;
-                    }
-            }
-            /*logger.WriteMessage(true, ConsoleColor.White, "Üye ID numarasını girin>");
+            model.BookId = int.Parse(Console.ReadLine());
+            logger.WriteMessage(false, ConsoleColor.White, "\n\nÜye numarasını girin (Bir üye en fazla 10 kitap alabilir!)>");
             model.MemberId = int.Parse(Console.ReadLine());
-            BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
-            controller.CreateBorrowingRecords(model);*/
+
+            var book = BookCtrl.GetBookById(model.BookId);
+            int memberBookCount = controller.GetNumberOfBooksBorrowingByTheUser(model.MemberId);
+            if (memberBookCount < MaxBookCount && book.State == true)
+            {
+                if (controller.CreateBorrowingRecords(model) == ProcessStatus.isSuccess)
+                {
+                    BookCtrl.UpdateBookState(model.BookId);
+                    logger.WriteMessage(true, ConsoleColor.Green, "Ödünç alma kaydı başarılı");
+                }
+            }
+            else
+            {
+                if(memberBookCount >= MaxBookCount)   logger.WriteMessage(true, ConsoleColor.White, "Bu üye hali hazırda ", ConsoleColor.Red, memberBookCount, ConsoleColor.White, " adet kitap ödünç almış!");
+                else if(!book.State) logger.WriteMessage(true, ConsoleColor.Red, book.Title, ConsoleColor.White, " isimli kitap hali hazırda başka bir üye/okuma odası tarafında alınmış!");
+            }
             Console.ReadKey();
         }
 
+        internal void ReturnBorrowedBook()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "2 - Kitap Geri Alma");
+            logger.WriteMessage(false, ConsoleColor.Yellow, "Teslim edilecek kitap ID'sini girin>");
+            int id = int.Parse(Console.ReadLine());
+            BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
+            if(controller.UpdateBorrowingState(id) == ProcessStatus.isSuccess)
+            {
+                BookController BookCtrl = new(dbContext,mapper, logger);
+                BookCtrl.UpdateBookState(id);
+                logger.WriteMessage(true, ConsoleColor.Green, "\nKitap başarıyla geri alındı.");
+            }
+            Console.ReadKey();
+        }
 
         /// <summary>
-        ///  Function defined for the "7 List all books" menu.
+        ///  Function defined for the "4 List all books" menu.
         /// </summary>
         internal void PrintListofAllBorrowingRecords()
         {
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "4 - Ödünç Alma Kayıtları");
             BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
+            logger.WriteMessage(true, ConsoleColor.Cyan, "No  | BID -    Kitap Başlığı                         | MID -   Üye Adı Soyadı                         | İşlem Tarihi | Teslim Durumu\r\n" + new string('-', 143));
             var records = controller.GetBorrowingRecords();
             records.ForEach(x =>
             {
 
-                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
-                                            ConsoleColor.Yellow, $"{x.BookId,3}",
-                                            ConsoleColor.White, $" | {x.BookTitle,-30}",
-                                            ConsoleColor.White, $" | {x.MemberId,-3}",
-                                            ConsoleColor.White, $" | {x.MemberNameSurname, -40}",
-                                            ConsoleColor.White, $" | {x.ProcessDate.ToString("yyyy.MM.dd")}");
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3}", ConsoleColor.White, " | ",
+                                            ConsoleColor.DarkYellow, $"{x.BookId,3}", ConsoleColor.White, " - ",
+                                            ConsoleColor.Yellow, $"{x.BookTitle,-40}", ConsoleColor.White, " | ",
+                                            ConsoleColor.DarkYellow, $"{x.MemberId,3}", ConsoleColor.White, " - ",
+                                            ConsoleColor.Yellow, $"{x.MemberNameSurname, -40}", ConsoleColor.White, " | ",
+                                            ConsoleColor.White, $"{x.ProcessDate.ToString("yyyy.MM.dd"), 11}", ConsoleColor.White, "  | ",
+                                            x.state ? ConsoleColor.Green : ConsoleColor.Red, x.state ? "Teslim Edildi" : "Teslim Edilmedi");
             });
 
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
@@ -697,15 +682,16 @@ namespace fimple_bootcamp_week_1_homework.Manager
         {
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "23 - Kayıtlı Yazarler Listesi ");
-            logger.WriteMessage(true, ConsoleColor.DarkCyan, "MID -        Author Name Surname                                           | Number of books written\r\n" + new string('-', 143)); 
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "MID -        Yazar Adı Soyadı                                              | Yazdığı Kitap Sayısı\r\n" + new string('-', 143)); 
             AuthorController controller = new AuthorController(dbContext, mapper, logger);
             var AuthorList = controller.GetAuthors();
             AuthorList.ForEach(x =>
             {
 
-                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
-                                            ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-68}"
-                                            /**/
+                logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3}", ConsoleColor.White, " - ",
+                                        ConsoleColor.Yellow, $"{x.Name + " " + x.Surname,-68}", ConsoleColor.White, " | ",
+                                            ConsoleColor.White, "Yazarın toplam ", ConsoleColor.DarkCyan, controller.GetBookCount(x.Id), ConsoleColor.White, " tane kitabı bulunmaktadır."
+
                                             );
             });
 
@@ -729,11 +715,12 @@ namespace fimple_bootcamp_week_1_homework.Manager
                 Console.ReadKey();
                 return;
             }
-            logger.WriteMessage(true, ConsoleColor.DarkCyan, "ID  -     yazar Adı Soyadı                             |         Şehir         |  Doğum Günü  | Ak/Pas  |        Aldığı Kitap Sayısı\r\n" + new string('-', 143));
+            logger.WriteMessage(true, ConsoleColor.DarkCyan, "MID -        Yazar Adı Soyadı                                              | Yazdığı Kitap Sayısı\r\n" + new string('-', 143));
 
-            logger.WriteMessage(true, ConsoleColor.Magenta, $"{Author.Id,-3} - ",
-                                        ConsoleColor.Yellow, $"{Author.Name + " " + Author.Surname,-68}"
-                                        /**/);
+            logger.WriteMessage(true, ConsoleColor.Magenta, $"{Author.Id,-3}",ConsoleColor.White, " - ",
+                                        ConsoleColor.Yellow, $"{Author.Name + " " + Author.Surname,-68}", ConsoleColor.White, " | ",
+                                        ConsoleColor.White, "Yazarın toplam ", ConsoleColor.DarkCyan, controller.GetBookCount(Author.Id), ConsoleColor.White, " tane kitabı bulunmaktadır."
+                                        );
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
             Console.ReadKey();
         }

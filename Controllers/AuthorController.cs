@@ -109,5 +109,12 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 return ProcessStatus.isFailed;
             }
         }
+
+        public int GetBookCount(int id)
+        {
+            GetAuthorBookCountQuery query = new GetAuthorBookCountQuery(_dbContext);
+            query.id = id;
+            return query.Handle();
+        }
     }
 }

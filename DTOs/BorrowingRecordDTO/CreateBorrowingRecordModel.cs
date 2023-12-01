@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO
 {
-    internal class CreateBorrowingRecordModelForReadingRoom
+    internal class CreateBorrowingRecordModel
     {
         public int BookId { get; set; }
-        public int RoomId { get; set; }
+        public int MemberId { get; set; }
         public DateTime ProcessDate { get; set; }
     }
 }

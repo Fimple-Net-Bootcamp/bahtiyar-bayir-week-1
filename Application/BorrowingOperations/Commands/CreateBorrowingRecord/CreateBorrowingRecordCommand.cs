@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.DBOperations;
-using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
+using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Comman
 {
     internal class CreateBorrowingRecordCommand
     {
-        public CreateBorrowingRecordModelForMember model;
+        public CreateBorrowingRecordModel model;
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
 

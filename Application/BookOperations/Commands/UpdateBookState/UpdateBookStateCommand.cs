@@ -20,7 +20,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Up
             var book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book is null)
                 throw new ArgumentException($"{id} numarasına sahip bir kitap bulunamadı!");
-            book.State = false;
+            book.State = !book.State;
             _dbContext.SaveChanges();
         }
     }

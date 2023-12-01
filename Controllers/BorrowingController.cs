@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Commands.CreateBorrowingRecord;
+using fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Commands.UpdateBorroiwngState;
 using fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
-using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
 using System;
@@ -35,7 +35,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             return result;
         }
 
-        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModelForMember model)
+        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModel model)
         {
             CreateBorrowingRecordCommand command = new CreateBorrowingRecordCommand(_dbContext, _mapper);
             command.model = model;
@@ -50,28 +50,27 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             }
         }
 
-        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModelForReadingRoom model)
-        {
-            CreateBorrowingRecordCommand command = new CreateBorrowingRecordCommand(_dbContext, _mapper);
-            //command.model = model;
-            try
-            {
-                command.Handle();
-                return ProcessStatus.isSuccess;
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
-                return ProcessStatus.isFailed;
-            }
-        }
-
         public int GetNumberOfBooksBorrowingByTheUser(int id)
         {
             GetMemberBorrowingCountQuery query = new(_dbContext);
             query.id = id;
             var count = query.Handle();
             return count;
+        }
+        
+        public ProcessStatus UpdateBorrowingState(int bookId)
+        {
+            UpdateBorrowingStateCommand command = new UpdateBorrowingStateCommand(_dbContext);
+            command.id = bookId;
+            try
+            {
+                command.Handle();
+                return ProcessStatus.isSuccess;
+            }catch(Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
         }
     }
 }

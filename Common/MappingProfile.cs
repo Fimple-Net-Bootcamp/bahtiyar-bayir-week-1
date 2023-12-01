@@ -3,7 +3,7 @@ using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Create
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Queries;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
-using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
+using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using System;
@@ -34,7 +34,7 @@ namespace fimple_bootcamp_week_1_homework.Common
                 ).ForMember(
                     dest => dest.ProcessDate, opt => opt.MapFrom(src =>src.Date)
                 );
-            CreateMap<CreateBorrowingRecordModelForMember, Borrowing>().ForMember(
+            CreateMap<CreateBorrowingRecordModel, Borrowing>().ForMember(
                     dest => dest.BorrowerId, opt => opt.MapFrom(src => src.MemberId)
                 );
         }

@@ -1,25 +1,26 @@
 ﻿using fimple_bootcamp_week_1_homework.DBOperations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Queries
+namespace fimple_bootcamp_week_1_homework.Application.AuthorOperations.Queries
 {
-    internal class GetMemberBorrowingCountQuery
+    internal class GetAuthorBookCountQuery
     {
         public int id;
         private readonly ILibraryDbContext _dbContext;
 
-        public GetMemberBorrowingCountQuery(ILibraryDbContext dbContext)
+        public GetAuthorBookCountQuery(ILibraryDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         public int Handle()
         {
-            int count = _dbContext.Borrowings.Where(b => b.BorrowerId == id && b.state == true).Count();
+            var count = _dbContext.Books.Include(x => x.Author).Where(b => b.AuthorId == id).Count();
             return count;
         }
     }

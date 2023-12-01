@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs
+namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO
 {
     internal class BorrowingRecordViewModel
     {
