@@ -75,7 +75,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "3": CollectBooksFromReadingRoom(); break;*/
                     case "4": CreateBookRecord(); break;
                     case "5": DeleteBookRecord(); break;
-                    /* case "6":UpdateBookRecord(); break; */
+                    case "6":UpdateBookRecord(); break; 
                     case "7": PrintListofAllBooks(); break;
                     case "8": PrintBookByTitle(); break;
                     /*case "9": PrintOnlyAvailableForBorrowBookList(); break;
@@ -137,7 +137,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         {
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "5 - Kitap Kaydı Silme");
-            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz kitap başlığını giriniz:\r\n");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını silmek istediğiniz kitabın ID numarasını giriniz:\r\n");
             int id = int.Parse(Console.ReadLine());
             BookController controller = new(dbContext, mapper, logger);
             var book = controller.GetBookById(id);
@@ -156,6 +156,24 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     }
                 }
                 else logger.WriteMessage(true, ConsoleColor.White, "Kayıt silme işlemi iptal edildi.");
+            }
+            Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "6 Update book record" menu.
+        /// </summary>
+        internal void UpdateBookRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "6 - Kitap Kaydı Güncelleme");
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Lütfen kaydını güncellemek istediğiniz kitabın ID numarasını giriniz:\r\n");
+            int id = int.Parse(Console.ReadLine());
+            BookController controller = new(dbContext, mapper, logger);
+            var book = controller.GetBookById(id);
+            if (book is not null)
+            {
+
             }
             Console.ReadKey();
         }
