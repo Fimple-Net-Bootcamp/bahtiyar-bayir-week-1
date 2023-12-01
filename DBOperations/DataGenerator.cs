@@ -15,7 +15,7 @@ namespace fimple_bootcamp_week_1_homework.DBOperations
         {
             using (var context = new LibraryDbContext(serviceProvider.GetRequiredService<DbContextOptions<LibraryDbContext>>()))
             {
-                if (context.Books.Any())
+                if (context.Borrowings.Any())
                 {
                     return;
                 }
@@ -207,14 +207,14 @@ namespace fimple_bootcamp_week_1_homework.DBOperations
                     new Member{Name = "Sigismond",  Surname = "Huntingdon",         BirthDay = new DateTime(1996, 04, 07), State = true, City = "Oslo"}
                     #endregion
                     );
-                context.Borrowings.AddRange(
-                    new Borrowing { BookId = 1, BorrowerId = 1, Date = DateTime.Now },
-                    new Borrowing { BookId = 2, BorrowerId = 1, Date = DateTime.Now },
-                    new Borrowing { BookId = 3, BorrowerId = 1, Date = DateTime.Now },
-                    new Borrowing { BookId = 4, BorrowerId = 1, Date = DateTime.Now },
-                    new Borrowing { BookId = 5, BorrowerId = 1, Date = DateTime.Now },
-                    new Borrowing { BookId = 6, BorrowerId = 1, Date = DateTime.Now }
-                    );
+                /*context.Borrowings.AddRange(
+                    new Borrowing { BookId = 1, BorrowerId = 2, Date = DateTime.Now },
+                    new Borrowing { BookId = 2, BorrowerId = 2, Date = DateTime.Now },
+                    new Borrowing { BookId = 3, BorrowerId = 2, Date = DateTime.Now },
+                    new Borrowing { BookId = 4, BorrowerId = 2, Date = DateTime.Now },
+                    new Borrowing { BookId = 5, BorrowerId = 2, Date = DateTime.Now },
+                    new Borrowing { BookId = 6, BorrowerId = 2, Date = DateTime.Now }
+                    );*/
                 context.SaveChanges();
             }
         }

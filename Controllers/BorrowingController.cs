@@ -44,7 +44,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 return ProcessStatus.isSuccess;
             }catch (Exception ex)
             {
-                _logger.WriteMessage(true, ConsoleColor.Red, ex);
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
                 return ProcessStatus.isFailed;
             }
         }

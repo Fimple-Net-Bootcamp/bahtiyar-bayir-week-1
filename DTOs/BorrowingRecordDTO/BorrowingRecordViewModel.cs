@@ -14,5 +14,6 @@ namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs
         public int MemberId { get; set; }
         public string MemberNameSurname { get; set; }
         public DateTime ProcessDate { get; set; }
+        public Boolean state { get; set; }
     }
 }

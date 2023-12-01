@@ -22,7 +22,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Querie
 
         public List<BorrowingRecordViewModel> Handle()
         {
-            var records = _dbContext.Borrowings.Include(x => x.Book).Include(x => x.Member).ToList();
+            var records = _dbContext.Borrowings.Include(x => x.Book).Include(x => x.Borrower).ToList();
             if(records is null)
                 throw new InvalidOperationException("Hiç bir kayıt mevcut değil!");
             return new List<BorrowingRecordViewModel>(_mapper.Map<List<BorrowingRecordViewModel>>(records));

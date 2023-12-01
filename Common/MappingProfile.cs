@@ -20,12 +20,23 @@ namespace fimple_bootcamp_week_1_homework.Common
         {
             CreateMap<CreateBookModel, Book>();
             CreateMap<Book, BooksViewModel>().ForMember(
-                dest => dest.Author, opt => opt.MapFrom(src => src.Author.GetName()));
+                    dest => dest.Author, opt => opt.MapFrom(src => src.Author.GetName()));
             CreateMap<CreateMemberModel, Member>();
             CreateMap<Member, MemberViewModel>();
             CreateMap<CreateAuthorModel, Author>();
             CreateMap<Author, AuthorViewModel>();
-            CreateMap<Borrowing, BorrowingRecordViewModel>();
+            CreateMap<Borrowing, BorrowingRecordViewModel>().ForMember(
+                    dest => dest.BookTitle, opt => opt.MapFrom(src => src.Book.Title)
+                ).ForMember(
+                    dest => dest.MemberNameSurname, opt => opt.MapFrom(src => src.Borrower.GetName())
+                ).ForMember(
+                    dest => dest.MemberId, opt => opt.MapFrom(src => src.Borrower.Id)
+                ).ForMember(
+                    dest => dest.ProcessDate, opt => opt.MapFrom(src =>src.Date)
+                );
+            CreateMap<CreateBorrowingRecordModel, Borrowing>().ForMember(
+                    dest => dest.BorrowerId, opt => opt.MapFrom(src => src.MemberId)
+                );
         }
     }
 }

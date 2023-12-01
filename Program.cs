@@ -28,5 +28,4 @@ using (var scope = _host.Services.CreateAsyncScope())
 };
 
 var _manager = _host.Services.GetRequiredService<IManager>();
-
 _manager.Start();

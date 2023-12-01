@@ -32,6 +32,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             this.dbContext = dbContext;
             this.logger = logger;
             this.mapper = mapper;
+            Console.WriteLine($"{dbContext.Authors.Count()},{dbContext.Books.Count()}, {dbContext.Members.Count()}, {dbContext.Borrowings.Count()}");
         }
 
         public void Start()
@@ -124,6 +125,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
             logger.WriteMessage(true, ConsoleColor.White, "Üye ID numarasını girin>");
             model.MemberId = int.Parse(Console.ReadLine());
             BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
+            controller.CreateBorrowingRecords(model);
             Console.ReadKey();
         }
 
@@ -133,7 +135,7 @@ namespace fimple_bootcamp_week_1_homework.Manager
         internal void PrintListofAllBorrowingRecords()
         {
             Console.Clear();
-            logger.WriteTitle(ConsoleColor.Blue, "Ödünç alma kayıtları");
+            logger.WriteTitle(ConsoleColor.Blue, "4 - Ödünç Alma Kayıtları");
             BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
             var records = controller.GetBorrowingRecords();
             records.ForEach(x =>
@@ -141,9 +143,10 @@ namespace fimple_bootcamp_week_1_homework.Manager
 
                 logger.WriteMessage(true, ConsoleColor.Magenta, $"{x.Id,-3} - ",
                                             ConsoleColor.Yellow, $"{x.BookId,3}",
-                                            ConsoleColor.White, $" | {x.BookTitle,-3} | ",
-                                            ConsoleColor.White, $" | {x.MemberId,-3} | ",
-                                            ConsoleColor.White, $"{x.ProcessDate.ToString("yyyy.MM.dd")}");
+                                            ConsoleColor.White, $" | {x.BookTitle,-30}",
+                                            ConsoleColor.White, $" | {x.MemberId,-3}",
+                                            ConsoleColor.White, $" | {x.MemberNameSurname, -40}",
+                                            ConsoleColor.White, $" | {x.ProcessDate.ToString("yyyy.MM.dd")}");
             });
 
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");

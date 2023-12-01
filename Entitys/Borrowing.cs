@@ -14,7 +14,8 @@ namespace fimple_bootcamp_week_1_homework.Entitys
         public int BookId { get; set; }
         public Book Book { get; set; }
         public int BorrowerId { get; set; }
-        public Member Member { get; set; }
-        public DateTime Date { get; set; }
+        public Member Borrower { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
+        public Boolean state { get; set; } = false;
     }
 }

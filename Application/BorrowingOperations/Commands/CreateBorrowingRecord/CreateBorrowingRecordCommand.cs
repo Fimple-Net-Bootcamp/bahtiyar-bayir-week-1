@@ -28,11 +28,10 @@ namespace fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Comman
                 throw new InvalidDataException("Bu ID'ye ait bir kitap kaydı bulunamadı!");
             if(!(_dbContext.Members.Any(member => member.Id == model.MemberId)))
                 throw new InvalidDataException("Bu ID'ye ait bir üye kaydı bulunamadı!");
+            
             var record = _mapper.Map<Borrowing>(model);
             _dbContext.Borrowings.Add(record);
             _dbContext.SaveChanges();
-            Console.WriteLine("Başarılı");
-
         }
     }
 }
