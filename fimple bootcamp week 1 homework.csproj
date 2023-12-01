@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\MemberOperations\Commands\DeleteMember\" />
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
   </ItemGroup>
