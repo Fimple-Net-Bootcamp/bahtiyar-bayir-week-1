@@ -2,6 +2,7 @@
 using fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Commands.CreateBorrowingRecord;
 using fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Queries;
 using fimple_bootcamp_week_1_homework.DBOperations;
+using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
@@ -34,7 +35,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
             return result;
         }
 
-        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModel model)
+        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModelForMember model)
         {
             CreateBorrowingRecordCommand command = new CreateBorrowingRecordCommand(_dbContext, _mapper);
             command.model = model;
@@ -47,6 +48,27 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
                 return ProcessStatus.isFailed;
             }
+        }
+
+        public ProcessStatus CreateBorrowingRecords(CreateBorrowingRecordModelForReadingRoom model)
+        {
+            CreateBorrowingRecordCommand command = new CreateBorrowingRecordCommand(_dbContext, _mapper);
+            //command.model = model;
+            try
+            {
+                command.Handle();
+                return ProcessStatus.isSuccess;
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
+                return ProcessStatus.isFailed;
+            }
+        }
+
+        public int GetNumberOfBooksBorrowingByTheUser(int id)
+        {
+            return 0;
         }
     }
 }

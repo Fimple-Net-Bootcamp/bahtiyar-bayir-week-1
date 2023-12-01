@@ -6,6 +6,7 @@ using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.AuthorDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
+using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO;
 using fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs;
 using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
@@ -77,31 +78,31 @@ namespace fimple_bootcamp_week_1_homework.Manager
                 logger.WriteMessage(false, ConsoleColor.Cyan, "Your choice>");
                 switch (Console.ReadLine())
                 {
-                    case "1": CreateBookBorrowingRecord(); break;
-                    /*case "2": ReturnBorrowedBook(); break;
-                    case "3": CollectBooksFromReadingRoom(); break;*/
-                    case "3": PrintListofAllBorrowingRecords(); break;
-                    case "4": CreateBookRecord(); break;
-                    case "5": DeleteBookRecord(); break;
-                    case "6": UpdateBookRecord(); break; 
-                    case "7": PrintListofAllBooks(); break;
-                    case "8": PrintBookById(); break;
-                    case "9": PrintOnlyAvailableForBorrowBookList(); break;
+					case "1":  CreateBookBorrowingRecord(); 			break;
+                    //case "2":  ReturnBorrowedBook(); 					break;
+                    //case "3":  CollectBooksFromReadingRoom(); 		break;
+					case "3":  PrintListofAllBorrowingRecords();		break;
+                    case "4":  CreateBookRecord(); 						break;
+                    case "5":  DeleteBookRecord(); 						break;
+                    case "6":  UpdateBookRecord(); 						break;
+                    case "7":  PrintListofAllBooks(); 					break;
+					case "8":  PrintBookById(); 						break; 
+                    case "9":  PrintOnlyAvailableForBorrowBookList(); 	break;
                     case "10": PrintOnlyUnavailableForBorrowBookList(); break;
-                    case "11": CreateMemberRecord(); break;
-                    case "12": DeleteMemberRecord(); break;
-                    case "13": UpdateMemberRecord(); break;
-                    case "14": ChangeMemberStatus(); break;
-                    case "15": PrintAllMemberList(); break;
-                    case "16": PrintMemberById(); break;
-                    case "17": PrintOnlyActiveMemberList(); break;
-                    case "18": PrintOnlyPassiveMemberList(); break;
-                    /*case "19": PrintAllMembersWithBorrowedBooks(); break;*/
-                    case "20": CreateAuthorRecord(); break;
-                    case "21": DeleteAuthorRecord(); break;
-                    case "22": UpdateAuthorRecord(); break;
-                    case "23": PrintAllAuthorList(); break;
-                    case "24": PrintAuthorById(); break;
+                    case "11": CreateMemberRecord(); 					break;
+                    case "12": DeleteMemberRecord(); 					break;
+                    case "13": UpdateMemberRecord(); 					break;
+                    case "14": ChangeMemberStatus(); 					break;
+                    case "15": PrintAllMemberList(); 					break;
+					case "16": PrintMemberById(); 						break; 
+                    case "17": PrintOnlyActiveMemberList(); 			break;
+                    case "18": PrintOnlyPassiveMemberList(); 			break;
+                    //case "19": PrintAllMembersWithBorrowedBooks(); 		break;
+                    case "20": CreateAuthorRecord(); 					break;
+                    case "21": DeleteAuthorRecord(); 					break;
+                    case "22": UpdateAuthorRecord(); 					break;
+                    case "23": PrintAllAuthorList(); 					break;
+					case "24": PrintAuthorById(); 						break; 
                     case "25": loop = false; break;
                 }
             }
@@ -115,19 +116,51 @@ namespace fimple_bootcamp_week_1_homework.Manager
             Console.Clear();
             logger.WriteTitle(ConsoleColor.Blue, "1 - Ödünç Alma Kaydı");
             logger.WriteMessage(false, ConsoleColor.Yellow, "Ödünç alınacak kitap ID'sini girin>");
-            CreateBorrowingRecordModel model = new();
-            model.BookId = int.Parse(Console.ReadLine());
+            int bookId = int.Parse(Console.ReadLine());
 
-            logger.WriteMessage(true, ConsoleColor.Yellow, "Kitap ödünç alma türünü girin:\r\n",
+            logger.WriteMessage(false, ConsoleColor.Yellow, "Kitap ödünç alma türünü girin:\r\n",
                                         ConsoleColor.Magenta, "1-", ConsoleColor.White, " Okuma odasında okumak için\r\n",
-                                        ConsoleColor.Magenta, "2-", ConsoleColor.White, " Kütüphane dışına çıkarmak için");
+                                        ConsoleColor.Magenta, "2-", ConsoleColor.White, " Kütüphane dışına çıkarmak için\r\nSeçiminiz>");
             string select = Console.ReadLine();
-            logger.WriteMessage(true, ConsoleColor.White, "Üye ID numarasını girin>");
+            BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
+            switch (select)
+            {
+                case "1": 
+                    {
+                        CreateBorrowingRecordModelForReadingRoom model = new();
+                        model.BookId = bookId;
+                        logger.WriteMessage(false, ConsoleColor.White, "\n\nOkuma odası numarasını girin (501 ile 510 arası)>");
+                        model.RoomId = int.Parse(Console.ReadLine()); ;
+                        controller.CreateBorrowingRecords(model);
+                    } break;
+                case "2":
+                    {
+                        CreateBorrowingRecordModelForMember model = new();
+                        model.BookId = bookId;
+                        logger.WriteMessage(false, ConsoleColor.White, "\n\nÜye numarasını girin>");
+                        model.MemberId = int.Parse(Console.ReadLine()); ;
+                        if(controller.CreateBorrowingRecords(model) == ProcessStatus.isSuccess)
+                        {
+                            BookController BookCtrl = new(dbContext, mapper, logger);
+                            BookCtrl.UpdateBookState(bookId);
+                            logger.WriteMessage(true, ConsoleColor.Green, "Ödünç alma kaydı başarılı");
+                        }
+                        
+                    }
+                    break;
+                default:
+                    {
+                        logger.WriteMessage(true, ConsoleColor.Red, "Girilen değer seçenekler arasında değil!");
+                        return;
+                    }
+            }
+            /*logger.WriteMessage(true, ConsoleColor.White, "Üye ID numarasını girin>");
             model.MemberId = int.Parse(Console.ReadLine());
             BorrowingController controller = new BorrowingController(dbContext, mapper, logger);
-            controller.CreateBorrowingRecords(model);
+            controller.CreateBorrowingRecords(model);*/
             Console.ReadKey();
         }
+
 
         /// <summary>
         ///  Function defined for the "7 List all books" menu.

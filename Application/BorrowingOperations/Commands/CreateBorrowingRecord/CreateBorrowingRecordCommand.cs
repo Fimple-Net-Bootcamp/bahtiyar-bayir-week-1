@@ -12,7 +12,7 @@ namespace fimple_bootcamp_week_1_homework.Application.BorrowingOperations.Comman
 {
     internal class CreateBorrowingRecordCommand
     {
-        public CreateBorrowingRecordModel model;
+        public CreateBorrowingRecordModelForMember model;
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
 

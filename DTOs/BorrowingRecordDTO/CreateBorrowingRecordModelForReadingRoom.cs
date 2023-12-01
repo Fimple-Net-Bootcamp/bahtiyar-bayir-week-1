@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO.cs
+namespace fimple_bootcamp_week_1_homework.DTOs.BorrowingRecordDTO
 {
-    internal class CreateBorrowingRecordModel
+    internal class CreateBorrowingRecordModelForReadingRoom
     {
         public int BookId { get; set; }
-        public int MemberId { get; set; }
+        public int RoomId { get; set; }
         public DateTime ProcessDate { get; set; }
     }
 }

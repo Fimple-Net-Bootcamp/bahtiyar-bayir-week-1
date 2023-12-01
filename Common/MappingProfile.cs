@@ -34,7 +34,7 @@ namespace fimple_bootcamp_week_1_homework.Common
                 ).ForMember(
                     dest => dest.ProcessDate, opt => opt.MapFrom(src =>src.Date)
                 );
-            CreateMap<CreateBorrowingRecordModel, Borrowing>().ForMember(
+            CreateMap<CreateBorrowingRecordModelForMember, Borrowing>().ForMember(
                     dest => dest.BorrowerId, opt => opt.MapFrom(src => src.MemberId)
                 );
         }
