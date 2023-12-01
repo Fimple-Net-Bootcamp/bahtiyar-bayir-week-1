@@ -85,7 +85,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 return ProcessStatus.isFailed;
             }
         }
-        /*
+        
         public ProcessStatus DeleteMember(int id)
         {
             DeleteMemberCommand command = new DeleteMemberCommand(_dbContext);
@@ -120,6 +120,6 @@ namespace fimple_bootcamp_week_1_homework.Controllers
                 _logger.WriteMessage(true, ConsoleColor.Red, ex.Message);
                 return ProcessStatus.isFailed;
             }
-        }*/
+        }
     }
 }
