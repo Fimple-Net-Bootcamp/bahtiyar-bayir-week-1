@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace fimple_bootcamp_week_1_homework.Manager
 {
@@ -95,6 +96,20 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "25": loop = false; break;
                 }
             }
+        }
+        /// <summary>
+        ///  Function defined for the "4 Create book record" menu.
+        /// </summary>
+        internal void CreateBookRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "4 - Book Record Creation Menu");
+            Console.ReadKey();
+            try
+            {
+
+            }
+
         }
 
         /// <summary>

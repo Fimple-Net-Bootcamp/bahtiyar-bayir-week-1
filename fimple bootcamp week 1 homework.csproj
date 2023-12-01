@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\BookOperations\Commands\" />
+    <Folder Include="Application\BookOperations\Commands\CreateBook\" />
     <Folder Include="Entitys\" />
     <Folder Include="DBOperations\" />
     <Folder Include="build output\" />
