@@ -8,5 +8,7 @@ namespace fimple_bootcamp_week_1_homework.DTOs.AuthorDTO
 {
     internal class CreateAuthorModel
     {
+        public string Name { get; set; }
+        public string Surname { get; set; }
     }
 }
