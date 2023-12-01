@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fimple_bootcamp_week_1_homework.Application.AuthorOperations.Command.CreateAuthor
+namespace fimple_bootcamp_week_1_homework.Application.AuthorOperations.Commands.CreateAuthor
 {
     internal class CreateAuthorCommand
     {
