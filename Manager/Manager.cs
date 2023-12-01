@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.CreateBook;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
 using fimple_bootcamp_week_1_homework.Controllers;
 using fimple_bootcamp_week_1_homework.DBOperations;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
+using fimple_bootcamp_week_1_homework.DTOs.MemberDTO;
 using fimple_bootcamp_week_1_homework.Entitys;
 using fimple_bootcamp_week_1_homework.Services;
 using Microsoft.EntityFrameworkCore;
@@ -82,9 +84,9 @@ namespace fimple_bootcamp_week_1_homework.Manager
                     case "8": PrintBookByTitle(); break;
                     case "9": PrintOnlyAvailableForBorrowBookList(); break;
                     case "10": PrintOnlyUnavailableForBorrowBookList(); break;
-                    /*case "11": CreateMemberRecord(); break;
+                    case "11": CreateMemberRecord(); break;
                     case "12": DeleteMemberRecord(); break;
-                    case "13": UpdateMemberRecord(); break;
+                    /*case "13": UpdateMemberRecord(); break;
                     case "14": ChangeMemberStatus(); break;
                     case "15": PrintAllMemberList(); break;
                     case "16": GetMemberById(); break;
@@ -292,6 +294,36 @@ namespace fimple_bootcamp_week_1_homework.Manager
 
             logger.WriteMessage(true, ConsoleColor.Red, "\r\nPress a key to exit.");
             Console.ReadKey();
+        }
+
+        /// <summary>
+        ///  Function defined for the "11 - Creating Member Record" menu.
+        /// </summary>
+        internal void CreateMemberRecord()
+        {
+            Console.Clear();
+            logger.WriteTitle(ConsoleColor.Blue, "11 - Yeni Üye Kaydı");
+            CreateMemberModel model = new();
+            logger.WriteMessage(true, ConsoleColor.Yellow, "Please enter the following information:\r\n\n");
+
+            logger.WriteMessage(true, ConsoleColor.White, $"{"Name:",-25}");        model.Name      = Console.ReadLine();
+            logger.WriteMessage(true, ConsoleColor.White, $"{"Surname:",-25}");     model.Surname   = Console.ReadLine();
+            logger.WriteMessage(true, ConsoleColor.White, $"{"City:",-25}");        model.City      = Console.ReadLine();
+            logger.WriteMessage(true, ConsoleColor.White, $"{"Birth Day:",-25}");
+
+            if (DateTime.TryParse(Console.ReadLine(), out DateTime result)) model.BirthDay = result;
+            else { logger.WriteMessage(true, ConsoleColor.White, "Girilen ", ConsoleColor.Red, "tarih", ConsoleColor.White, " formatı hatalı. Kayıt yapılamadı!\r\n"); Console.ReadKey(); return; }
+            MemberController controller = new(dbContext, mapper, logger);
+            if (controller.CreateMember(model) == ProcessStatus.isSuccess)
+            {
+                logger.WriteMessage(true, ConsoleColor.Green, $"{model.Name + " " + model.Surname}", ConsoleColor.White, " isimli kitap başarıyla kaydedildi.");
+                Console.ReadKey();
+            }
+            else
+            {
+                logger.WriteMessage(true, ConsoleColor.White, "Üye kaydı yapılamadı!");
+                Console.ReadKey();
+            }
         }
     }
 }

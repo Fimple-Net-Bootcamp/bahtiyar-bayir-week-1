@@ -73,8 +73,8 @@ namespace fimple_bootcamp_week_1_homework.Controllers
         {
 
             CreateMemberCommand command = new CreateMemberCommand(_dbContext, _mapper);
-            command.Model = model;
             CreateMemberCommandValidator validator = new CreateMemberCommandValidator();
+            command.Model = model;
             try
             {
                 validator.ValidateAndThrow(command);

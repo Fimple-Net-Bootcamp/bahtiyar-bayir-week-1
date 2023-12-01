@@ -23,7 +23,8 @@ namespace fimple_bootcamp_week_1_homework.Application.MemberOperations.Commands.
 
         public void Handle()
         {
-            var member = _dbContext.Members.SingleOrDefault(x => x.GetName().ToLower().Trim() == $"{Model.Name} {Model.Surname}".ToLower().Trim());
+            string name = (Model.Name + " " + Model.Surname).ToLower().Trim();
+            var member = _dbContext.Members.Where(m => new string(m.Name + " " + m.Surname).ToLower().Trim() == name).SingleOrDefault();
             if (member is not null)
                 throw new InvalidOperationException($"Bu isimde bir üye kaydı daha önceden mevcut! Üye numarası {member.Id}");
 

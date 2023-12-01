@@ -14,7 +14,6 @@ using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.Create
 using Microsoft.EntityFrameworkCore;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.DeleteBook;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBook;
-using System.Web.Mvc;
 using fimple_bootcamp_week_1_homework.DTOs.BookDTO;
 using fimple_bootcamp_week_1_homework.Application.BookOperations.Commands.UpdateBookState;
 
@@ -42,7 +41,7 @@ namespace fimple_bootcamp_week_1_homework.Controllers
 
         public BooksViewModel GetBookById(int id)
         {
-            GetBookByIdQuery query = new GetBookByIdQuery(_dbContext, _mapper);
+            GetBookByIDQuery query = new GetBookByIDQuery(_dbContext, _mapper);
             GetBookByIDQueryValidator validator = new();
             query.id = id;
             try
